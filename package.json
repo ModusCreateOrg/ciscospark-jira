@@ -3,10 +3,25 @@
   "version": "1.0.0",
   "description": "Bot helps onboard new employees",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "ava",
+    "watch": "ava --watch"
+  },
   "author": "",
   "license": "MIT",
   "dependencies": {
     "botkit": "../botkit"
+  },
+  "devDependencies": {
+    "ava": "^0.17.0"
+  },
+  "ava": {
+    "files": [
+      "test/**/*.js",
+      "!test/setup.js"
+    ],
+    "require": [
+      "./test/setup"
+    ]
   }
 }
