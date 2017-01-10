@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Bot helps onboard new employees",
   "main": "index.js",
+  "engines": {
+    "node": "~7.4"
+  },
   "scripts": {
     "test": "ava",
     "watch": "ava --watch"
