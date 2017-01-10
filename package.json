@@ -1,0 +1,10 @@
+{
+  "name": "onboard",
+  "version": "1.0.0",
+  "description": "Bot helps onboard new employees",
+  "main": "index.js",
+  "scripts": {
+  },
+  "author": "",
+  "license": "MIT"
+}
