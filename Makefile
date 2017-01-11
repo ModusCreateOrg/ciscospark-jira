@@ -27,5 +27,8 @@ start:
 install:
 	# nothing to see here
 
+proxy:
+	ngrok http 3000
+
 .PHONY: \
-	lint fix test watch transpile
+	lint fix test watch transpile proxy
