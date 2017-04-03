@@ -1,5 +1,10 @@
 # Starter kit for Botkit for Cisco Spark
 
+This is a starter kit for creating bots for [Cisco Spark](https://www.ciscospark.com/)
+using [botkit](https://github.com/howdyai/botkit).
+
+You can clone this repo and have a bot deployed to Heroku in just a couple minutes.
+
 ## Deploying your own bot
 
 Here are instructions for deploying on Heroku, but this can be adapted to any host.
