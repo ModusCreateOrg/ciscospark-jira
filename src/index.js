@@ -16,7 +16,7 @@ controller.setupWebserver(process.env.PORT || 3000, function (err, webserver) {
   })
 })
 
-controller.on('bot_room_join', handleJoin)
+controller.on('bot_space_join', handleJoin)
 
 controller.hears(['test'], 'direct_mention,direct_message', handleTestMessage)
 
