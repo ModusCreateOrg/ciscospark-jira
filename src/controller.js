@@ -1,4 +1,4 @@
-import { sparkbot } from 'Botkit'
+import { sparkbot } from 'botkit'
 
 const controller = sparkbot({
   debug: true,
