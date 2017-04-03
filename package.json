@@ -7,6 +7,7 @@
     "node": "~7.4"
   },
   "scripts": {
+    "prod": "node lib/index.js",
     "start": "./inenv.sh babel-node src/index.js",
     "server-dev": "./inenv.sh babel-watch src/index.js",
     "ngrok": "ngrok http 3000 -subdomain=spark-test-bot",
@@ -14,7 +15,8 @@
     "test-watch": "ava --watch",
     "transpile": "babel --out-dir=lib src",
     "lint": "eslint .",
-    "fix": "eslint . --fix"
+    "fix": "eslint . --fix",
+    "heroku-postbuild": "npm run transpile"
   },
   "author": "",
   "license": "MIT",
