@@ -19,7 +19,7 @@ Here are instructions for deploying on Heroku, but this can be adapted to any ho
 
         git push heroku
 
-1. Add your bot to your space. He'll tell you what to do from there.
+1. Add your bot to your space.
 
 ## Development
 
