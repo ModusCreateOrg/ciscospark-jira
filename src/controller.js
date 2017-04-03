@@ -5,7 +5,7 @@ const controller = sparkbot({
   log: true,
   public_address: process.env.PUBLIC_ADDRESS,
   ciscospark_access_token: process.env.ACCESS_TOKEN,
-  studio_token: process.env.STUDIO_TOKEN,
+  studio_token: process.env.STUDIO_TOKEN
 })
 
 export default controller

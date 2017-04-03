@@ -1,5 +1,9 @@
 export const handleDirectMessage = (bot, message) => {
   bot.reply(message, 'I got your private message.', (err, worker, message) => {
+    if (err) {
+      console.log(err)
+      throw err
+    }
   })
 }
 
