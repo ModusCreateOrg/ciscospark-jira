@@ -8,6 +8,7 @@
   },
   "scripts": {
     "start": "./inenv.sh babel-node src/index.js",
+    "server-dev": "./inenv.sh babel-watch src/index.js",
     "ngrok": "ngrok http 3000 -subdomain=spark-test-bot",
     "test": "ava",
     "test-watch": "ava --watch",
@@ -26,6 +27,7 @@
     "babel-eslint": "^7.1.1",
     "babel-polyfill": "^6.20.0",
     "babel-preset-env": "^1.1.8",
+    "babel-watch": "^2.0.5",
     "eslint": "^3.13.1",
     "eslint-config-standard": "^6.2.1",
     "eslint-plugin-promise": "^3.4.0",

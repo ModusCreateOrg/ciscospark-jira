@@ -40,7 +40,7 @@ Here are instructions for deploying on Heroku, but this can be adapted to any ho
 
 1. Start the local development server
 
-        npm start
+        npm run server-dev
 
 1. Run ngrok (or something like it).
 
