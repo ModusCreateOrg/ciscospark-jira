@@ -1,21 +1,11 @@
 import test from 'ava'
+import mockBot from './helpers/mockBot'
+import { handleDirectMention } from '../src/handlers'
 
-test.cb('Welcome', t => {
-  // TODO left off here
-  const app = require('../src/nextTrain.js')
-  const event = {
-    'session': {
-      'new': true
-    },
-    'request': {
-      'type': 'LaunchRequest'
-    }
-  }
-  const context = {}
+test('Welcome', t => {
+  const message = {}
+  handleDirectMention(mockBot, message)
 
-  app.handler(event, context, function (error, response) {
-    t.regex(response.response.outputSpeech.text, /welcome/i)
-    t.end(error)
-  })
+  t.true(mockBot.reply.calledWith(message, 'You mentioned me.'))
 })
 
