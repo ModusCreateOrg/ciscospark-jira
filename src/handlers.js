@@ -25,5 +25,5 @@ export const handleTestMessage = (bot, message) => {
 }
 
 export const handleJoin = (bot, message) => {
-  bot.reply(message, 'This trusty bot is here to help.')
+  bot.reply(message, 'This trusty JIRA bot is here to help.')
 }
