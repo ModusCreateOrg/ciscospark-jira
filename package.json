@@ -24,7 +24,8 @@
     "babel-cli": "^6.18.0",
     "babel-polyfill": "^6.20.0",
     "babel-preset-env": "^1.1.8",
-    "botkit": "^0.5.2"
+    "botkit": "^0.5.2",
+    "request-promise-native": "^1.0.3"
   },
   "devDependencies": {
     "ava": "^0.17.0",

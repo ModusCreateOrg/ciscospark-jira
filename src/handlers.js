@@ -1,26 +1,18 @@
-export const handleDirectMessage = (bot, message) => {
-  bot.reply(message, 'I got your private message.', (err, worker, message) => {
+import { getIssues } from './jira'
+
+const formatIssues = (issues) =>
+  issues.map(issue => `* [${issue.key}](${issue.self}) - ${issue.fields.summary}`).join('\n')
+
+export const listIssues = async (bot, message) => {
+  await bot.startConversation(message, async (err, convo) => {
     if (err) {
       console.log(err)
       throw err
     }
-  })
-}
+    const issues = await getIssues()
 
-export const handleDirectMention = (bot, message) => bot.reply(message, 'You mentioned me.')
-
-export const handleTestMessage = (bot, message) => {
-  bot.startConversation(message, (err, convo) => {
-    if (err) {
-      console.log(err)
-      throw err
-    }
-    convo.say('Hello!')
-    convo.say('I am bot')
-    convo.ask('What are you?', function (res, convo) {
-      convo.say('You said ' + res.text)
-      convo.next()
-    })
+    const issuesStr = formatIssues(issues)
+    convo.say(`Open issues are:\n${issuesStr}`)
   })
 }
 
