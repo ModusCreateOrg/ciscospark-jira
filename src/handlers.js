@@ -11,7 +11,7 @@ export const listMyIssues = async (bot, message) => {
 }
 
 export const listIssuesForUser = async (bot, message) => {
-  await listIssuesFor(bot, message, message.match[1])
+  await listIssuesFor(bot, message, message.match[message.match.length - 1])
 }
 
 export const listIssuesFor = async (bot, message, username) => {
@@ -21,25 +21,18 @@ export const listIssuesFor = async (bot, message, username) => {
     bot.reply(message, `Expected 1 user, but found ${users.length}. Please be more specific.`)
   } else {
     const user = users[0]
+    const { issues, total } = await getIssues(user.key)
 
-    await bot.startConversation(message, async (err, convo) => {
-      if (err) {
-        console.log(err)
-        throw err
-      }
-      const { issues, total } = await getIssues(user.key)
-
-      let message
-      if (!total) {
-        message = `I found no open issues for ${user.displayName}`
-      } else {
-        const issuesStr = formatIssues(issues)
-        message = (
-          `I found ${total} open issue(s) for ${user.displayName}. They are:\n${issuesStr}`
-        )
-      }
-      convo.say(message)
-    })
+    let reply
+    if (!total) {
+      reply = `I found no open issues for ${user.displayName}`
+    } else {
+      const issuesStr = formatIssues(issues)
+      reply = (
+        `I found ${total} open issue(s) for ${user.displayName}. They are:\n${issuesStr}`
+      )
+    }
+    bot.reply(message, reply)
   }
 }
 

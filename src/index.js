@@ -19,6 +19,6 @@ controller.on('bot_space_join', handleJoin)
 controller.hears(['list my open issues'], 'direct_mention,direct_message', listMyIssues)
 
 controller.hears([
-  'list issues for (.*)',
-  'list issues assigned to (.*)'
+  'list (open )?issues for (.*)',
+  'list (open )?issues assigned to (.*)'
 ], 'direct_mention,direct_message', listIssuesForUser)
