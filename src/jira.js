@@ -17,9 +17,9 @@ export const getIssues = async (user) => {
     constraints.assignee = user
   }
   const jql = Object.keys(constraints).map((key) => `${key} = "${constraints[key]}"`).join(' AND ')
+  const fields = ['summary']
   try {
-    const response = await jiraAPI.post('/search', { body: { jql } })
-    return response
+    return await jiraAPI.post('/search', { body: { jql } })
   } catch (error) {
     console.log(error)
   }
@@ -27,8 +27,7 @@ export const getIssues = async (user) => {
 
 export const findUsers = async (searchStr) => {
   try {
-    const response = await jiraAPI.get('/user/search', { qs: { username: searchStr } })
-    return response
+    return await jiraAPI.get('/user/search', { qs: { username: searchStr } })
   } catch (error) {
     console.log(error)
   }
