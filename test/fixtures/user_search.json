@@ -1,0 +1,13 @@
+[
+    {
+        "active": true,
+        "avatarUrls": {},
+        "displayName": "Randy Butternubs",
+        "emailAddress": "randy@example.com",
+        "key": "randy",
+        "locale": "en_US",
+        "name": "randy",
+        "self": "https://example.atlassian.net/rest/api/2/user?username=randy",
+        "timeZone": "America/New_York"
+    }
+]

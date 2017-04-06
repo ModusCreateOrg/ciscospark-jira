@@ -6,18 +6,18 @@ const formatIssues = (issues) =>
     return `* [${issue.key}](${link}) - ${issue.fields.summary}`
   }).join('\n')
 
-export const listMyIssues = async (bot, message) => {
-  return listIssuesFor(bot, message, message.user)
-}
+export const listMyIssues = (bot, message) =>
+  listIssuesFor(bot, message, message.user)
 
-export const listIssuesForUser = async (bot, message) => {
-  await listIssuesFor(bot, message, message.match[message.match.length - 1])
-}
+export const listIssuesForUser = (bot, message) =>
+  listIssuesFor(bot, message, message.match[message.match.length - 1])
 
 export const listIssuesFor = async (bot, message, username) => {
   const users = await findUsers(username)
 
-  if (users.length !== 1) {
+  if (users.length == 0) {
+    bot.reply(message, `Could not find any users matching "${username}"`)
+  } else if (users.length !== 1) {
     bot.reply(message, `Expected 1 user, but found ${users.length}. Please be more specific.`)
   } else {
     const user = users[0]

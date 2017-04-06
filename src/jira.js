@@ -32,3 +32,8 @@ export const findUsers = async (searchStr) => {
     console.log(error)
   }
 }
+
+export default {
+  findUsers,
+  getIssues
+}

@@ -1,0 +1,32 @@
+{
+    "issues": [
+        {
+            "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+            "fields": {
+                "summary": "Update task status by dragging and dropping from column to column >> Try dragging this task to \"Done\""
+            },
+            "id": "10010",
+            "key": "TEST-11",
+            "self": "https://example.atlassian.net/rest/api/2/issue/10010"
+        },
+        {
+            "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+            "fields": {
+                "summary": "As a developer, I can update story and task status with drag and drop (click the triangle at far left of this story to show sub-tasks)"
+            },
+            "id": "10009",
+            "key": "TEST-10",
+            "self": "https://example.atlassian.net/rest/api/2/issue/10009"
+        },
+        {
+            "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+            "fields": {
+                "summary": "This is a sample task. Tasks are used to break down the steps to implement a user story"
+            },
+            "id": "10006",
+            "key": "TEST-7",
+            "self": "https://example.atlassian.net/rest/api/2/issue/10006"
+        }
+    ],
+    "total": 3
+}
