@@ -20,7 +20,7 @@ export const getIssues = async (user) => {
   const fields = ['summary']
   try {
     return await jiraAPI.post('/search', { body: { jql } })
-  } catch (error) {
+  } catch ({ error }) {
     console.log(error)
   }
 }
@@ -28,7 +28,7 @@ export const getIssues = async (user) => {
 export const findUsers = async (searchStr) => {
   try {
     return await jiraAPI.get('/user/search', { qs: { username: searchStr } })
-  } catch (error) {
+  } catch ({ error }) {
     console.log(error)
   }
 }
