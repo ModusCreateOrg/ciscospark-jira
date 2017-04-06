@@ -1,6 +1,6 @@
 import 'babel-polyfill'
 import controller from './controller'
-import { handleJoin, listIssues } from './handlers'
+import { handleJoin, listIssuesForUser, listMyIssues } from './handlers'
 
 const bot = controller.spawn({})
 
@@ -16,4 +16,9 @@ controller.setupWebserver(process.env.PORT || 3000, function (err, webserver) {
 
 controller.on('bot_space_join', handleJoin)
 
-controller.hears(['list'], 'direct_mention,direct_message', listIssues)
+controller.hears(['list my open issues'], 'direct_mention,direct_message', listMyIssues)
+
+controller.hears([
+  'list issues for (.*)',
+  'list issues assigned to (.*)'
+], 'direct_mention,direct_message', listIssuesForUser)
