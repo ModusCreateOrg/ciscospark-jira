@@ -1,18 +1,31 @@
-import sinon from 'sinon'
-
-export const convo = (reply) => ({
-  say: sinon.stub().callsFake((message) => reply(message))
-})
+import test from 'ava'
+import { core } from 'botkit'
 
 export const messages = []
-export const addMessage = (message) => messages.push(message)
+test.beforeEach(() => { messages.length = 0 })
 
-export const bot = {
-  messages,
-  startConversation: async (message, callback) => {
-    await callback(null, convo(addMessage))
-  },
-  reply: sinon.stub().callsFake((_, message) => addMessage(message))
+const messageLogger = function (botkit, config) {
+  this.botkit = botkit
+  this.config = config
+
+  this.say = (message, cb) => messages.push(message)
+
+  this.replyWithQuestion = (message, question, cb) => {
+    botkit.startConversation(message, (convo) => {
+      convo.ask(question, cb)
+    })
+  }
+
+  this.reply = (src, resp) => messages.push(resp)
+
+  this.findConversation = (message, cb) => {
+    botkit.debug('DEFAULT FIND CONVO')
+    cb(null)
+  }
 }
 
+export const fakeController = core({ debug: false, log: false })
+fakeController.defineBot(messageLogger)
+
+export const bot = fakeController.spawn()
 export default bot

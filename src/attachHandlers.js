@@ -1,6 +1,6 @@
-import { handleJoin, listIssuesForUser, listMyIssues } from './handlers'
+export default (controller, handlers) => {
+  const { handleJoin, listIssuesForUser, listMyIssues } = handlers
 
-export default (controller) => {
   controller.on('bot_space_join', handleJoin)
 
   controller.hears(['list my open issues'], 'direct_mention,direct_message', listMyIssues)

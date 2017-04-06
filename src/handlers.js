@@ -39,3 +39,9 @@ export const listIssuesFor = async (bot, message, username) => {
 export const handleJoin = (bot, message) => {
   bot.reply(message, 'This trusty JIRA bot is here to help.')
 }
+
+export default {
+  handleJoin,
+  listIssuesForUser,
+  listMyIssues
+}

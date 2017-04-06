@@ -16,12 +16,12 @@ test.afterEach(t => {
 test('findUsers', async t => {
   const username = 'randy'
 
-  const result = await findUsers(username)
+  await findUsers(username)
   t.true(getStub.calledWith('/user/search', { qs: { username } }))
 })
 
 test.serial('get issues without user', async t => {
-  const result = await getIssues()
+  await getIssues()
   t.true(postStub.calledWith('/search', {
     body: {
       jql: 'resolution = "Unresolved"',
@@ -31,7 +31,7 @@ test.serial('get issues without user', async t => {
 })
 
 test.serial('get issues for user', async t => {
-  const result = await getIssues('randy')
+  await getIssues('randy')
   t.true(postStub.calledWith('/search', {
     body: {
       jql: 'resolution = "Unresolved" AND assignee = "randy"',
