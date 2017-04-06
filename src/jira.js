@@ -19,7 +19,7 @@ export const getIssues = async (user) => {
   const jql = Object.keys(constraints).map((key) => `${key} = "${constraints[key]}"`).join(' AND ')
   const fields = ['summary']
   try {
-    return await jiraAPI.post('/search', { body: { jql } })
+    return await jiraAPI.post('/search', { body: { jql, fields } })
   } catch ({ error }) {
     console.log(error)
   }
