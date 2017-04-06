@@ -1,7 +1,10 @@
 import { getIssues, findUsers } from './jira'
 
 const formatIssues = (issues) =>
-  issues.map(issue => `* [${issue.key}](${issue.self}) - ${issue.fields.summary}`).join('\n')
+  issues.map(issue => {
+    const link = `${process.env.JIRA_HOST}/browse/${issue.key}`
+    return `* [${issue.key}](${link}) - ${issue.fields.summary}`
+  }).join('\n')
 
 export const listMyIssues = async (bot, message) => {
   return listIssuesFor(bot, message, message.user)
