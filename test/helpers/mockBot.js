@@ -12,7 +12,7 @@ export const bot = {
   startConversation: async (message, callback) => {
     await callback(null, convo(addMessage))
   },
-  reply: sinon.stub().callsFake(addMessage)
+  reply: sinon.stub().callsFake((_, message) => addMessage(message))
 }
 
 export default bot

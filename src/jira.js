@@ -1,6 +1,6 @@
 import request from 'request-promise-native'
 
-const jiraAPI = request.defaults({
+export const api = request.defaults({
   auth: {
     user: process.env.JIRA_USERNAME,
     password: process.env.JIRA_PASSWORD
@@ -19,7 +19,7 @@ export const getIssues = async (user) => {
   const jql = Object.keys(constraints).map((key) => `${key} = "${constraints[key]}"`).join(' AND ')
   const fields = ['summary']
   try {
-    return await jiraAPI.post('/search', { body: { jql, fields } })
+    return await api.post('/search', { body: { jql, fields } })
   } catch ({ error }) {
     console.log(error)
   }
@@ -27,7 +27,7 @@ export const getIssues = async (user) => {
 
 export const findUsers = async (searchStr) => {
   try {
-    return await jiraAPI.get('/user/search', { qs: { username: searchStr } })
+    return await api.get('/user/search', { qs: { username: searchStr } })
   } catch ({ error }) {
     console.log(error)
   }
