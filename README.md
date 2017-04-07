@@ -1,9 +1,21 @@
-# Starter kit for Botkit for Cisco Spark
+# Jira bot for Cisco Spark
 
-This is a starter kit for creating bots for [Cisco Spark](https://www.ciscospark.com/)
-using [botkit](https://github.com/howdyai/botkit).
+This is a bot for Cisco Spark that integrates with Jira.
 
-You can clone this repo and have a bot deployed to Heroku in just a couple minutes.
+## Spark Configuration
+
+In order for the bot to communicate with Cisco Spark, a couple configuration values
+are expected to exist in the environment (or `.env` or `.env.local` files):
+
+* `PUBLIC_ADDRESS` - the address at which your bot can be reached.
+* `ACCESS_TOKEN` - the bot's access token from Cisco Spark
+
+## Jira Configuration
+
+In order for the bot to talk with Jira a couple configuration values are required:
+
+* `JIRA_HOST` - the URL to the Jira instance (`https://YOUR_SUBDOMAIN.atlassian.net` for example)
+* `JIRA_USERNAME` and `JIRA_PASSWORD` - the username and password used to authenticate with the Jira API. Changes made to Jira will be performed by this user, so you may want to create a special bot account.
 
 ## Deploying your own bot
 
@@ -45,22 +57,22 @@ Here are instructions for deploying on Heroku, but this can be adapted to any ho
 
 1. Start the local development server
 
-        npm run server-dev
+        yarn server-dev
 
 1. Run ngrok (or something like it).
 
     Because Spark uses webhooks to talk to bots, you must run something like ngrok locally to expose your server to the web.
     We've included a script to do this for you (requires ngrok)
 
-        npm run ngrok
+        yarn ngrok
 
 
 ### Tests
 
 Run the tests:
 
-    npm test
+    yarn test
 
 Run the test watcher:
 
-    npm run test-watch
+    yarn test-watch
