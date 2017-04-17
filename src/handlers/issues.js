@@ -1,4 +1,4 @@
-import { getIssues, findUsers } from './jira'
+import { getIssues, findUsers } from '../jira'
 
 const formatIssues = (issues) =>
   issues.map(issue => {

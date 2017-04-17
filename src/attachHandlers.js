@@ -1,7 +1,9 @@
 export default (controller, handlers) => {
-  const { handleJoin, listIssuesForUser, listMyIssues } = handlers
+  const { handleIssueCommentEdited, handleJoin, listIssuesForUser, listMyIssues } = handlers
 
   controller.on('bot_space_join', handleJoin)
+
+  controller.on('jira:issue_comment_edited', handleIssueCommentEdited)
 
   controller.hears(['list my open issues'], 'direct_mention,direct_message', listMyIssues)
 
