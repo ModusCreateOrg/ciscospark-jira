@@ -1,8 +1,6 @@
 import controller from '../controller'
 
-export const handleIssueCommentEdited = (bot, event) => {
-  const message = `${event.user.displayName} edited a comment on ${event.issue.key}`
-
+const replyToWebhook = (bot, reply) => {
   controller.api.rooms.list().then((rooms) => {
     let roomId
 
@@ -13,11 +11,16 @@ export const handleIssueCommentEdited = (bot, event) => {
     })
 
     if (roomId) {
-      bot.reply({ channel: roomId }, message)
+      bot.reply({ channel: roomId }, reply)
     } else {
-      console.log(`JIRA webhook handler: I am not a member of a room name "${process.env.JIRA_WEBHOOK_ROOM}"`)
+      console.log(`JIRA webhook handler: I am not a member of a room matching "${process.env.JIRA_WEBHOOK_ROOM}"`)
     }
   })
+}
+
+export const handleIssueCommentEdited = (bot, event) => {
+  const message = `${event.user.displayName} edited a comment on ${event.issue.key}`
+  replyToWebhook(bot, message)
 }
 
 export default {
