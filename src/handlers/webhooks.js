@@ -21,7 +21,7 @@ const replyToWebhook = (bot, reply) => {
 
 export const handleIssueCommentEdited = (bot, event) => {
   const { comment, issue, user } = event
-  const link = `${linkToIssue(issue)}?focusedComment=${comment.id}`
+  const link = `${linkToIssue(issue)}?focusedCommentId=${comment.id}#comment-${comment.id}`
   const message = `${user.displayName} edited a comment on [${issue.key}](${link})`
   replyToWebhook(bot, message)
 }

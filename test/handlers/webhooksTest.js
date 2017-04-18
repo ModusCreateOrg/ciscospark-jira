@@ -56,7 +56,7 @@ test('sends notification when issue comment edited', async t => {
   const reply = messages[0]
   t.is(
     reply,
-    `Randy Butternubs edited a comment on [TEST-12](${process.env.JIRA_HOST}/browse/TEST-12?focusedComment=10101)`
+    `Randy Butternubs edited a comment on [TEST-12](${process.env.JIRA_HOST}/browse/TEST-12?focusedCommentId=10101#comment-10101)`
   )
 })
 
