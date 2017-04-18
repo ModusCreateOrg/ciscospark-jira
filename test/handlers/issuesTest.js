@@ -1,18 +1,18 @@
 import test from 'ava'
 import proxyquire from 'proxyquire'
 import sinon from 'sinon'
-import bot, { messages } from './helpers/mockBot'
+import bot, { messages } from '../helpers/mockBot'
 
-const mockIssues = require('./fixtures/search.json')
-const mockUsers = require('./fixtures/user_search.json')
+const mockIssues = require('../fixtures/search.json')
+const mockUsers = require('../fixtures/user_search.json')
 
 const getModuleMock = () => {
   const mocks = {
     getIssues: sinon.stub().returns(mockIssues),
     findUsers: sinon.stub().returns(mockUsers)
   }
-  const module = proxyquire('../src/handlers', {
-    './jira': mocks
+  const module = proxyquire('../../src/handlers/issues', {
+    '../jira': mocks
   })
   return {
     module,
