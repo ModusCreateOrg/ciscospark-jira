@@ -1,6 +1,6 @@
-# Jira bot for Cisco Spark
+# JIRA bot for Cisco Spark
 
-This is a bot for Cisco Spark that integrates with Jira.
+This is a bot for Cisco Spark that integrates with JIRA.
 
 ## Spark Configuration
 
@@ -10,12 +10,30 @@ are expected to exist in the environment (or `.env` or `.env.local` files):
 * `PUBLIC_ADDRESS` - the address at which your bot can be reached.
 * `ACCESS_TOKEN` - the bot's access token from Cisco Spark
 
-## Jira Configuration
+## JIRA Configuration
 
-In order for the bot to talk with Jira a couple configuration values are required:
+In order for the bot to talk with JIRA a couple configuration values are required:
 
-* `JIRA_HOST` - the URL to the Jira instance (`https://YOUR_SUBDOMAIN.atlassian.net` for example)
-* `JIRA_USERNAME` and `JIRA_PASSWORD` - the username and password used to authenticate with the Jira API. Changes made to Jira will be performed by this user, so you may want to create a special bot account.
+* `JIRA_HOST` - the URL to the JIRA instance
+  (`https://YOUR_SUBDOMAIN.atlassian.net` for example)
+* `JIRA_USERNAME` and `JIRA_PASSWORD` - the username and password used to
+  authenticate with the JIRA API. Changes made to JIRA will be performed by
+  this user, so you may want to create a special bot account.
+
+### JIRA Webhooks
+
+To be notified of events via webhooks, you must
+[register
+the webhook via the JIRA administration console]
+(https://developer.atlassian.com/jiradev/jira-apis/webhooks#Webhooks-jiraadmin).
+
+The URL should be `<PUBLIC_ADDRESS>/jira/receive`, where `<PUBLIC_ADDRESS>` is
+the same URL as specified above. Be sure to select the notifications that you
+want to receive in the administration console.
+
+Additionally, you need to specify which room to post the webhook notifications
+to. This is done using the `JIRA_WEBHOOK_ROOM` environment variable and should
+be the title of the room you want notifications posted to.
 
 ## Deploying your own bot
 
@@ -61,8 +79,9 @@ Here are instructions for deploying on Heroku, but this can be adapted to any ho
 
 1. Run ngrok (or something like it).
 
-    Because Spark uses webhooks to talk to bots, you must run something like ngrok locally to expose your server to the web.
-    We've included a script to do this for you (requires ngrok)
+    Because Spark uses webhooks to talk to bots, you must run something like
+    ngrok locally to expose your server to the web.  We've included a script to
+    do this for you (requires ngrok)
 
         yarn ngrok
 

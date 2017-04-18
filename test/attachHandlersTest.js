@@ -12,6 +12,7 @@ const sendMessage = (text) =>
 
 const handlers = {
   handleJoin: sinon.stub(),
+  handleIssueCommentEdited: sinon.stub(),
   listMyIssues: sinon.stub(),
   listIssuesForUser: sinon.stub()
 }
@@ -27,6 +28,11 @@ test.beforeEach(resetStubs)
 test('bot handles space join event', t => {
   fakeController.trigger('bot_space_join', [bot, {}])
   t.true(handlers.handleJoin.called)
+})
+
+test('bot handles jira issue_comment_edited event', t => {
+  fakeController.trigger('jira:issue_comment_edited', [bot, {}])
+  t.true(handlers.handleIssueCommentEdited.called)
 })
 
 test('bot handles listing my open issues', t => {
