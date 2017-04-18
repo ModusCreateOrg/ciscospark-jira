@@ -1,4 +1,5 @@
 import controller from '../controller'
+import { linkToIssue } from '../jira'
 
 const replyToWebhook = (bot, reply) => {
   controller.api.rooms.list().then((rooms) => {
@@ -19,7 +20,9 @@ const replyToWebhook = (bot, reply) => {
 }
 
 export const handleIssueCommentEdited = (bot, event) => {
-  const message = `${event.user.displayName} edited a comment on ${event.issue.key}`
+  const { comment, issue, user } = event
+  const link = `${linkToIssue(issue)}?focusedComment=${comment.id}`
+  const message = `${user.displayName} edited a comment on [${issue.key}](${link})`
   replyToWebhook(bot, message)
 }
 

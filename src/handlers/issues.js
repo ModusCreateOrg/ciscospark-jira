@@ -1,8 +1,8 @@
-import { getIssues, findUsers } from '../jira'
+import { getIssues, findUsers, linkToIssue } from '../jira'
 
 const formatIssues = (issues) =>
   issues.map(issue => {
-    const link = `${process.env.JIRA_HOST}/browse/${issue.key}`
+    const link = linkToIssue(issue)
     return `* [${issue.key}](${link}) - ${issue.fields.summary}`
   }).join('\n')
 

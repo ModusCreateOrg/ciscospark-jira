@@ -33,7 +33,10 @@ export const findUsers = async (searchStr) => {
   }
 }
 
+export const linkToIssue = issue => `${process.env.JIRA_HOST}/browse/${issue.key}`
+
 export default {
   findUsers,
-  getIssues
+  getIssues,
+  linkToIssue,
 }

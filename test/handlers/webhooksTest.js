@@ -31,6 +31,9 @@ const getModuleMock = () => {
 }
 
 const webhookEvent = {
+  comment: {
+    id: 10101
+  },
   user: {
     displayName: "Randy Butternubs"
   },
@@ -51,7 +54,10 @@ test('sends notification when issue comment edited', async t => {
 
   t.is(messages.length, 1)
   const reply = messages[0]
-  t.is(reply, 'Randy Butternubs edited a comment on TEST-12')
+  t.is(
+    reply,
+    `Randy Butternubs edited a comment on [TEST-12](${process.env.JIRA_HOST}/browse/TEST-12?focusedComment=10101)`
+  )
 })
 
 test('does not send message when room not found', async t => {
