@@ -71,3 +71,31 @@ test('does not send message when room not found', async t => {
   t.is(messages.length, 0)
 })
 
+
+test('sends notification when issue created', async t => {
+  const { module, mocks } = getModuleMock()
+  const { handleIssueCreated } = module
+
+  process.env.JIRA_WEBHOOK_ROOM = roomName
+
+  const createIssueEvent = {
+    user: {
+      displayName: 'Randy Butternubs'
+    },
+    issue: {
+      key: 'TEST-11',
+      fields: {
+        summary: 'This is a new issue'
+      }
+    }
+  }
+  await handleIssueCreated(bot, createIssueEvent)
+
+  t.is(messages.length, 1)
+  const reply = messages[0]
+  t.is(
+    reply,
+    `Randy Butternubs created a new issue: [TEST-11 - This is a new issue](${process.env.JIRA_HOST}/browse/TEST-11)`
+  )
+})
+

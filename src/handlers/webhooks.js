@@ -26,6 +26,12 @@ export const handleIssueCommentEdited = (bot, event) => {
   replyToWebhook(bot, message)
 }
 
+export const handleIssueCreated = (bot, event) => {
+  const { issue, user } = event
+  const message = `${user.displayName} created a new issue: [${issue.key} - ${issue.fields.summary}](${linkToIssue(issue)})`
+  replyToWebhook(bot, message)
+}
+
 export default {
   handleIssueCommentEdited
 }
