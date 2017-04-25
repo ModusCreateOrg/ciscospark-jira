@@ -33,9 +33,28 @@ export const findUsers = async (searchStr) => {
   }
 }
 
+export const createIssue = async (projectKey, issueType, issueSummary) => {
+  projectKey = projectKey.toUpperCase()
+  issueType = issueType.charAt(0).toUpperCase() + issueType.substr(1).toLowerCase()
+  return await api.post('/issue', {
+    body: {
+      fields: {
+        summary: issueSummary,
+        issuetype: {
+          name: issueType
+        },
+        project: {
+          key: projectKey
+        }
+      }
+    }
+  })
+}
+
 export const linkToIssue = issue => `${process.env.JIRA_HOST}/browse/${issue.key}`
 
 export default {
+  createIssue,
   findUsers,
   getIssues,
   linkToIssue,
