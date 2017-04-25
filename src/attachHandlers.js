@@ -11,5 +11,8 @@ export default (controller, handlers) => {
     'list (open )?issues assigned to (.*)'
   ], 'direct_mention,direct_message', handlers.listIssuesForUser)
 
-  controller.hears(['create (.*?) (issue|story|bug) (.*)'], 'direct_mention,direct_message', handlers.createIssue)
+  controller.hears([
+    'create (.*?) (issue|story|bug) "(.*)"',
+    'create (.*?) (issue|story|bug) (.*)'
+  ], 'direct_mention,direct_message', handlers.createIssue)
 }
