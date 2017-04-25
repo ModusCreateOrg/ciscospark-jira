@@ -4,11 +4,11 @@ import { api, findUsers, getIssues } from '../src/jira'
 
 let getStub, postStub
 
-test.beforeEach(t => {
+test.beforeEach(() => {
   getStub = sinon.stub(api, 'get')
   postStub = sinon.stub(api, 'post')
 })
-test.afterEach(t => {
+test.afterEach(() => {
   getStub.restore()
   postStub.restore()
 })

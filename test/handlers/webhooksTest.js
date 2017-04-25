@@ -1,6 +1,5 @@
 import test from 'ava'
 import proxyquire from 'proxyquire'
-import sinon from 'sinon'
 import bot, { messages } from '../helpers/mockBot'
 
 const roomName = 'My Spark Room'
@@ -35,17 +34,17 @@ const webhookEvent = {
     id: 10101
   },
   user: {
-    displayName: "Randy Butternubs"
+    displayName: 'Randy Butternubs'
   },
   issue: {
     key: 'TEST-12'
   },
-  issue_event_type_name: "issue_comment_edited",
-  webhookEvent: "jira:issue_updated"
+  issue_event_type_name: 'issue_comment_edited',
+  webhookEvent: 'jira:issue_updated'
 }
 
 test('sends notification when issue comment edited', async t => {
-  const { module, mocks } = getModuleMock()
+  const { module } = getModuleMock()
   const { handleIssueCommentEdited } = module
 
   process.env.JIRA_WEBHOOK_ROOM = roomName
@@ -61,7 +60,7 @@ test('sends notification when issue comment edited', async t => {
 })
 
 test('does not send message when room not found', async t => {
-  const { module, mocks } = getModuleMock()
+  const { module } = getModuleMock()
   const { handleIssueCommentEdited } = module
 
   process.env.JIRA_WEBHOOK_ROOM = 'non existant room'
@@ -71,9 +70,8 @@ test('does not send message when room not found', async t => {
   t.is(messages.length, 0)
 })
 
-
 test('sends notification when issue created', async t => {
-  const { module, mocks } = getModuleMock()
+  const { module } = getModuleMock()
   const { handleIssueCreated } = module
 
   process.env.JIRA_WEBHOOK_ROOM = roomName

@@ -11,6 +11,7 @@ const sendMessage = (text) =>
   }])
 
 const handlers = {
+  createIssue: sinon.stub(),
   handleJoin: sinon.stub(),
   handleIssueCommentEdited: sinon.stub(),
   listMyIssues: sinon.stub(),
@@ -56,6 +57,32 @@ test('bot handles listing issues for another user', t => {
     )
     const { match } = handlers.listIssuesForUser.firstCall.args[1]
     t.is(match[match.length - 1], 'george')
+
+    resetStubs()
+  }
+})
+
+test('bot handles creating a new issue', t => {
+  const validMessages = [
+    { type: 'task', message: 'create test task lorem ipsum' },
+    { type: 'task', message: 'create new test task lorem ipsum' },
+    { type: 'story', message: 'create test story lorem ipsum' },
+    { type: 'bug', message: 'create test bug lorem ipsum' },
+    { type: 'bug', message: 'create test bug "lorem ipsum"' }
+  ]
+
+  for (const message of validMessages) {
+    sendMessage(message.message)
+    t.true(
+      handlers.createIssue.calledOnce,
+      `expected handler was not called for message ${message.message}`
+    )
+    const { match } = handlers.createIssue.firstCall.args[1]
+    const [ original, _, project, type, title ] = match
+    t.is(original, message.message)
+    t.is(project, 'test')
+    t.is(type, message.type)
+    t.is(title, 'lorem ipsum')
 
     resetStubs()
   }

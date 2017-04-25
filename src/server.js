@@ -8,7 +8,6 @@ export default (controller, bot) => {
       console.log('SPARK: Webhooks set up!')
     })
 
-
     webserver.post('/jira/receive', (req, res) => {
       const { body } = req
       const trigger = body.issue_event_type_name ? `jira:${body.issue_event_type_name}` : body.webhookEvent
