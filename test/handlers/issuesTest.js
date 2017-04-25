@@ -23,7 +23,7 @@ const getModuleMock = () => {
 }
 
 test('list my issues for user when issues are found', async t => {
-  const { module, mocks } = getModuleMock()
+  const { module } = getModuleMock()
   const { listIssuesFor } = module
 
   await listIssuesFor(bot, {}, 'randy')

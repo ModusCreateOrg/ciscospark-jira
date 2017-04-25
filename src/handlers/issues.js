@@ -15,7 +15,7 @@ export const listIssuesForUser = (bot, message) =>
 export const listIssuesFor = async (bot, message, username) => {
   const users = await jira.findUsers(username)
 
-  if (users.length == 0) {
+  if (users.length === 0) {
     bot.reply(message, `Could not find any users matching "${username}"`)
   } else if (users.length !== 1) {
     bot.reply(message, `Expected 1 user, but found ${users.length}. Please be more specific.`)

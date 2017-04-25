@@ -57,5 +57,5 @@ export default {
   createIssue,
   findUsers,
   getIssues,
-  linkToIssue,
+  linkToIssue
 }

@@ -8,7 +8,7 @@ const messageLogger = function (botkit, config) {
   this.botkit = botkit
   this.config = config
 
-  this.say = (message, cb) => messages.push(message)
+  this.say = (message) => messages.push(message)
 
   this.replyWithQuestion = (message, question, cb) => {
     botkit.startConversation(message, (convo) => {
