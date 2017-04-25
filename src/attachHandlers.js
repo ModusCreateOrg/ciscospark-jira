@@ -12,7 +12,7 @@ export default (controller, handlers) => {
   ], 'direct_mention,direct_message', handlers.listIssuesForUser)
 
   controller.hears([
-    'create (.*?) (issue|story|bug) "(.*)"',
-    'create (.*?) (issue|story|bug) (.*)'
+    'create (new )?(.*?) (task|story|bug) "(.*)"',
+    'create (new )?(.*?) (task|story|bug) (.*)'
   ], 'direct_mention,direct_message', handlers.createIssue)
 }

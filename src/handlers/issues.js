@@ -41,7 +41,7 @@ export const handleJoin = (bot, message) => {
 }
 
 export const createIssue = async (bot, message) => {
-  const [_, projectKey, issueType, issueSummary] = message.match
+  const [projectKey, issueType, issueSummary] = message.match.slice(-3)
 
   let response
   try {

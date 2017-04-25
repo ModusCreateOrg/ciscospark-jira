@@ -85,8 +85,8 @@ test('create issue succeeds', async t => {
     key: 'TEST-17'
   }
   createIssueMock.returns(createdIssue)
-  const match = ['create test issue lorem ipsum', 'test', 'issue', 'lorem ipsum']
-  const [_, project, type, title] = match
+  const match = ['create new test task lorem ipsum', 'new ', 'test', 'task', 'lorem ipsum']
+  const [project, type, title] = match.slice(-3)
 
   await createIssue(bot, { match })
 
@@ -103,7 +103,7 @@ test('create issue fails', async t => {
   const { createIssue: createIssueMock } = mocks
 
   createIssueMock.throws('Some error happened')
-  const match = ['create test issue lorem ipsum', 'test', 'issue', 'lorem ipsum']
+  const match = ['create test issue lorem ipsum', undefined, 'test', 'issue', 'lorem ipsum']
 
   await createIssue(bot, { match })
 

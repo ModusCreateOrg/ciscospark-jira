@@ -64,7 +64,8 @@ test('bot handles listing issues for another user', t => {
 
 test('bot handles creating a new issue', t => {
   const validMessages = [
-    { type: 'issue', message: 'create test issue lorem ipsum' },
+    { type: 'task', message: 'create test task lorem ipsum' },
+    { type: 'task', message: 'create new test task lorem ipsum' },
     { type: 'story', message: 'create test story lorem ipsum' },
     { type: 'bug', message: 'create test bug lorem ipsum' },
     { type: 'bug', message: 'create test bug "lorem ipsum"' }
@@ -74,10 +75,10 @@ test('bot handles creating a new issue', t => {
     sendMessage(message.message)
     t.true(
       handlers.createIssue.calledOnce,
-      `expected handler was not called for message ${message}`
+      `expected handler was not called for message ${message.message}`
     )
     const { match } = handlers.createIssue.firstCall.args[1]
-    const [ original, project, type, title ] = match
+    const [ original, _, project, type, title ] = match
     t.is(original, message.message)
     t.is(project, 'test')
     t.is(type, message.type)
