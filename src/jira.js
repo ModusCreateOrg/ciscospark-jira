@@ -9,6 +9,14 @@ export const api = request.defaults({
   json: true
 })
 
+const logError = (error) => {
+  if (error.statusCode && error.statusCode === 401) {
+    console.log('ERROR: Got "Unauthorized" error from JIRA API. Please check JIRA bot credentials!')
+  } else {
+    console.log(`ERROR: Got error from JIRA API: ${error.name}`)
+  }
+}
+
 export const getIssues = async (user) => {
   let constraints = {
     resolution: 'Unresolved'
@@ -20,16 +28,16 @@ export const getIssues = async (user) => {
   const fields = ['summary']
   try {
     return await api.post('/search', { body: { jql, fields } })
-  } catch ({ error }) {
-    console.log(error)
+  } catch (error) {
+    logError(error)
   }
 }
 
 export const findUsers = async (searchStr) => {
   try {
     return await api.get('/user/search', { qs: { username: searchStr } })
-  } catch ({ error }) {
-    console.log(error)
+  } catch (error) {
+    logError(error)
   }
 }
 
