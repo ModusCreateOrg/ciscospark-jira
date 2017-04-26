@@ -6,6 +6,11 @@ const formatIssues = (issues) =>
     return `* [${issue.key}](${link}) - ${issue.fields.summary}`
   }).join('\n')
 
+const getErrorMessage = ({ error }, defaultStr) => {
+  const { errorMessages = [] } = error
+  return errorMessages.length ? errorMessages[0] : defaultStr
+}
+
 export const listMyIssues = (bot, message) =>
   listIssuesFor(bot, message, message.user)
 
@@ -60,9 +65,8 @@ export const getIssueStatus = async (bot, message) => {
   let response
   try {
     response = await jira.getIssue(issueKey)
-  } catch ({ error }) {
-    const { errorMessages = [] } = error
-    const errorStr = errorMessages.length ? errorMessages[0] : 'I had trouble getting the issue details.'
+  } catch (error) {
+    const errorStr = getErrorMessage(error, 'I had trouble getting the issue details')
     bot.reply(message, `I could not get the status for "${issueKey}". ${errorStr}`)
     return
   }
@@ -70,7 +74,35 @@ export const getIssueStatus = async (bot, message) => {
   bot.reply(message, `[${key} - "${summary}"](${jira.linkToIssue(response)}) has status ${name}`)
 }
 
+export const commentOnIssue = async (bot, message) => {
+  let [issueKey, body] = message.match.slice(-2)
+
+  let displayName
+  try {
+    const user = await bot.botkit.api.people.get(message.original_message.personId)
+    displayName = user.displayName
+  } catch (error) {
+    console.log(`WARNING: Could not find display name for ${message.user}`)
+  }
+  if (displayName) {
+    body = `${displayName} commented via Cisco Spark:\n\n${body}`
+  }
+
+  let response
+  try {
+    response = await jira.commentOnIssue(issueKey, body)
+  } catch (error) {
+    const errorStr = getErrorMessage(error, 'I had trouble posting your comment.')
+    bot.reply(message, `I could not add your comment on "${issueKey}". ${errorStr}`)
+    return
+  }
+  const { id } = response
+  const link = `${jira.linkToIssue({ key: issueKey })}?focusedCommentId=${id}#comment-${id}`
+  bot.reply(message, `Ok, I've added your comment to [${issueKey}](${link}).`)
+}
+
 export default {
+  commentOnIssue,
   createIssue,
   getIssueStatus,
   handleJoin,

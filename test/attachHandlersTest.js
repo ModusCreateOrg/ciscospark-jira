@@ -15,6 +15,7 @@ const handlers = {
     handleIssueCommentEdited: sinon.stub()
   },
   issues: {
+    commentOnIssue: sinon.stub(),
     createIssue: sinon.stub(),
     getIssueStatus: sinon.stub(),
     handleJoin: sinon.stub(),
@@ -111,6 +112,29 @@ test('bot handles getting status of an issue', t => {
     )
     const { match } = handlers.issues.getIssueStatus.firstCall.args[1]
     t.is(match[match.length - 1], 'TEST-12')
+
+    resetStubs()
+  }
+})
+
+test('bot handles commenting on an issue', t => {
+  const validMessages = [
+    'comment on TEST-12 this is my comment',
+    'comment on TEST-12 "this is my comment"',
+    'comment on TEST-12 “this is my comment"',
+    'comment on TEST-12 “this is my comment”'
+  ]
+
+  for (const message of validMessages) {
+    sendMessage(message)
+    t.true(
+      handlers.issues.commentOnIssue.calledOnce,
+      `expected handler was not called for message ${message}`
+    )
+    const { match } = handlers.issues.commentOnIssue.firstCall.args[1]
+    const [key, comment] = match.slice(-2)
+    t.is(key, 'TEST-12')
+    t.is(comment, 'this is my comment')
 
     resetStubs()
   }
