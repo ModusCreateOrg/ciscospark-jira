@@ -97,8 +97,8 @@ test('bot handles creating a new issue', t => {
 test('bot handles getting status of an issue', t => {
   const validMessages = [
     "what's the status of TEST-12?",
-    "what’s the status of TEST-12?",
-    "whats the status of TEST-12?",
+    'what’s the status of TEST-12?',
+    'whats the status of TEST-12?',
     'status TEST-12',
     'what is the status of TEST-12?'
   ]

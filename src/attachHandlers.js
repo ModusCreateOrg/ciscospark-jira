@@ -17,8 +17,8 @@ export default (controller, handlers) => {
   ], 'direct_mention,direct_message', handlers.issues.createIssue)
 
   controller.hears([
-    "what['’]?s the status of ([^?]*)\?",
-    'what is the status of ([^?]*)\?',
+    "what['’]?s the status of ([^?]*)?",
+    'what is the status of ([^?]*)?',
     '^status ([^?]*)'
   ], 'direct_mention,direct_message', handlers.issues.getIssueStatus)
 }
