@@ -9,6 +9,7 @@ const mockUsers = require('../fixtures/user_search.json')
 const getModuleMock = () => {
   const mocks = {
     createIssue: sinon.stub(),
+    getIssue: sinon.stub(),
     getIssues: sinon.stub().returns(mockIssues),
     findUsers: sinon.stub().returns(mockUsers),
     linkToIssue: sinon.stub()
@@ -110,4 +111,41 @@ test('create issue fails', async t => {
   t.is(messages.length, 1)
   const reply = messages[0]
   t.is(reply, "I'm sorry, I was unable to create the issue")
+})
+
+test('get issue status succeeds', async t => {
+  const { module, mocks } = getModuleMock()
+  const { getIssueStatus } = module
+  const { getIssue: getIssueMock } = mocks
+  const issue = {
+    key: 'TEST-12',
+    fields: {
+      summary: 'Example issue',
+      status: {
+        name: 'In Progress'
+      }
+    }
+  }
+  getIssueMock.returns(issue)
+
+  await getIssueStatus(bot, { match: ['status TEST-12', 'TEST-12'] })
+
+  t.true(getIssueMock.calledWith('TEST-12'))
+  t.is(messages.length, 1)
+  const reply = messages[0]
+  t.true(reply.includes('has status In Progress'))
+})
+
+test('get issue status fails', async t => {
+  const { module, mocks } = getModuleMock()
+  const { getIssueStatus } = module
+  const { getIssue: getIssueMock } = mocks
+  const error = { errorMessages: ['Ya dun goofed'] }
+  getIssueMock.throws({ error })
+
+  await getIssueStatus(bot, { match: ['status TEST-12', 'TEST-12'] })
+
+  t.is(messages.length, 1)
+  const reply = messages[0]
+  t.true(reply.includes(error.errorMessages[0]))
 })

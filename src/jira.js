@@ -59,11 +59,16 @@ export const createIssue = async (projectKey, issueType, issueSummary) => {
   })
 }
 
+export const getIssue = async (issueKey) => {
+  return await api.get(`/issue/${issueKey}`)
+}
+
 export const linkToIssue = issue => `${process.env.JIRA_HOST}/browse/${issue.key}`
 
 export default {
   createIssue,
   findUsers,
+  getIssue,
   getIssues,
   linkToIssue
 }
