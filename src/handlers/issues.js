@@ -55,8 +55,24 @@ export const createIssue = async (bot, message) => {
   bot.reply(message, `[${response.key}](${jira.linkToIssue(response)}) created!`)
 }
 
+export const getIssueStatus = async (bot, message) => {
+  const issueKey = message.match[message.match.length - 1]
+  let response
+  try {
+    response = await jira.getIssue(issueKey)
+  } catch ({ error }) {
+    const { errorMessages = [] } = error
+    const errorStr = errorMessages.length ? errorMessages[0] : 'I had trouble getting the issue details.'
+    bot.reply(message, `I could not get the status for "${issueKey}". ${errorStr}`)
+    return
+  }
+  const { key, fields: { summary, status: { name } } } = response
+  bot.reply(message, `[${key} - "${summary}"](${jira.linkToIssue(response)}) has status ${name}`)
+}
+
 export default {
   createIssue,
+  getIssueStatus,
   handleJoin,
   listIssuesForUser,
   listMyIssues
