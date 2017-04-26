@@ -41,10 +41,6 @@ export const listIssuesFor = async (bot, message, username) => {
   }
 }
 
-export const handleJoin = (bot, message) => {
-  bot.reply(message, 'This trusty JIRA bot is here to help.')
-}
-
 export const createIssue = async (bot, message) => {
   const [projectKey, issueType, issueSummary] = message.match.slice(-3)
 
@@ -105,7 +101,6 @@ export default {
   commentOnIssue,
   createIssue,
   getIssueStatus,
-  handleJoin,
   listIssuesForUser,
   listMyIssues
 }

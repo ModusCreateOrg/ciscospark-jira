@@ -16,8 +16,12 @@ const displayHelp = (bot, message) => bot.reply(message, `
   - **help** — display this message
 `)
 
+export const handleJoin = (bot, message) =>
+  bot.reply(message, 'This trusty JIRA bot is here to help.')
+
 export default {
   displayHelp,
+  handleJoin,
   issues,
   webhooks
 }

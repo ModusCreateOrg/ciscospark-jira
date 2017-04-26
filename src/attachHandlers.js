@@ -1,5 +1,5 @@
 export default (controller, handlers) => {
-  controller.on('bot_space_join', handlers.issues.handleJoin)
+  controller.on('bot_space_join', handlers.handleJoin)
 
   controller.on('jira:issue_comment_edited', handlers.webhooks.handleIssueCommentEdited)
   controller.on('jira:issue_created', handlers.webhooks.handleIssueCreated)
