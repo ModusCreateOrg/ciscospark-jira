@@ -25,4 +25,6 @@ export default (controller, handlers) => {
   controller.hears([
     '^comment on ([^ ]*) ["“”]?([^"“”]*)["“”]?'
   ], 'direct_mention,direct_message', handlers.issues.commentOnIssue)
+
+  controller.hears([/^$/, 'help'], 'direct_mention', handlers.displayHelp)
 }
