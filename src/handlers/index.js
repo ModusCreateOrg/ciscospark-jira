@@ -14,6 +14,9 @@ const displayHelp = (bot, message) => bot.reply(message, `
   - **comment on a ticket** - To comment on an issue, you can tell me which ticket \
      and your comment: \`comment on TEST-12 "These features are important"\`
   - **help** — display this message
+
+  I'll also post notifications to ${process.env.JIRA_WEBHOOK_ROOM} \
+  when issues are created, assigned, or their status changes.
 `)
 
 export const handleJoin = (bot, message) =>
