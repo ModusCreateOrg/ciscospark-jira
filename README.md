@@ -24,8 +24,7 @@ In order for the bot to talk with JIRA a couple configuration values are require
 
 To be notified of events via webhooks, you must
 [register
-the webhook via the JIRA administration console]
-(https://developer.atlassian.com/jiradev/jira-apis/webhooks#Webhooks-jiraadmin).
+the webhook via the JIRA administration console](https://developer.atlassian.com/jiradev/jira-apis/webhooks#Webhooks-jiraadmin).
 
 The URL should be `<PUBLIC_ADDRESS>/jira/receive`, where `<PUBLIC_ADDRESS>` is
 the same URL as specified above. Be sure to select the notifications that you
