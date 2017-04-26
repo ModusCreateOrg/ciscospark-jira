@@ -1,11 +1,7 @@
-import { createIssue, handleJoin, listIssuesForUser, listMyIssues } from './issues'
-import { handleIssueCreated, handleIssueCommentEdited } from './webhooks'
+import issues from './issues'
+import webhooks from './webhooks'
 
 export default {
-  createIssue,
-  handleIssueCreated,
-  handleIssueCommentEdited,
-  handleJoin,
-  listIssuesForUser,
-  listMyIssues
+  issues,
+  webhooks
 }
