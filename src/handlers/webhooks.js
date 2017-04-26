@@ -32,6 +32,29 @@ export const handleIssueCreated = (bot, event) => {
   replyToWebhook(bot, message)
 }
 
+export const handleGeneric = (bot, event) => {
+  const { issue, changelog: { items = [] } } = event
+  if (items.length) {
+    for (let change of items) {
+      switch (change.field) {
+        case 'status':
+          handleStatusUpdate(bot, issue, change)
+          break
+      }
+    }
+  }
+}
+
+const handleStatusUpdate = (bot, issue, update) => {
+  const message = `
+    [${issue.key} - ${issue.fields.summary}](${linkToIssue(issue)}) \
+    changed status from **${update.fromString}** to **${update.toString}**
+  `
+  replyToWebhook(bot, message)
+}
+
 export default {
-  handleIssueCommentEdited
+  handleIssueCommentEdited,
+  handleIssueCreated,
+  handleGeneric
 }

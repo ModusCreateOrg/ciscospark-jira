@@ -97,3 +97,32 @@ test('sends notification when issue created', async t => {
   )
 })
 
+test('sends notification when issue status updated', async t => {
+  const { module } = getModuleMock()
+  const { handleGeneric } = module
+
+  process.env.JIRA_WEBHOOK_ROOM = roomName
+
+  const statusUpdateEvent = {
+    issue: {
+      key: 'TEST-12',
+      fields: {
+        summary: 'Example issue'
+      }
+    },
+    changelog: {
+      items: [{
+        field: 'status',
+        fromString: 'In Progress',
+        toString: 'Done'
+      }]
+    }
+  }
+  await handleGeneric(bot, statusUpdateEvent)
+  t.is(messages.length, 1)
+  const reply = messages[0]
+  t.is(
+    reply.replace(/\s+/g, " ").trim(),
+    `[TEST-12 - Example issue](${process.env.JIRA_HOST}/browse/TEST-12) changed status from **In Progress** to **Done**`
+  )
+})
