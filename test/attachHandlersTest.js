@@ -75,7 +75,8 @@ test('bot handles creating a new issue', t => {
     { type: 'task', message: 'create new test task lorem ipsum' },
     { type: 'story', message: 'create test story lorem ipsum' },
     { type: 'bug', message: 'create test bug lorem ipsum' },
-    { type: 'bug', message: 'create test bug "lorem ipsum"' }
+    { type: 'bug', message: 'create test bug "lorem ipsum"' },
+    { type: 'bug', message: 'create test bug “lorem ipsum”' }
   ]
 
   for (const message of validMessages) {

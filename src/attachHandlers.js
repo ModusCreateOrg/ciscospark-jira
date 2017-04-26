@@ -1,3 +1,6 @@
+// Accept straight quotes (") and closing/opening quotes (“”)
+const quotes = '"“”'
+
 export default (controller, handlers) => {
   controller.on('bot_space_join', handlers.handleJoin)
 
@@ -14,8 +17,7 @@ export default (controller, handlers) => {
   ], 'direct_mention,direct_message', handlers.issues.listIssuesForUser)
 
   controller.hears([
-    'create (new )?(.*?) (task|story|bug) "(.*)"',
-    'create (new )?(.*?) (task|story|bug) (.*)'
+    `create (new )?(.*?) (task|story|bug) [${quotes}]?([^${quotes}]*)[${quotes}]?`
   ], 'direct_mention,direct_message', handlers.issues.createIssue)
 
   controller.hears([
@@ -25,7 +27,7 @@ export default (controller, handlers) => {
   ], 'direct_mention,direct_message', handlers.issues.getIssueStatus)
 
   controller.hears([
-    '^comment on ([^ ]*) ["“”]?([^"“”]*)["“”]?'
+    `^comment on ([^ ]*) [${quotes}]?([^${quotes}]*)[${quotes}]?`
   ], 'direct_mention,direct_message', handlers.issues.commentOnIssue)
 
   controller.hears([/^$/, 'help'], 'direct_mention', handlers.displayHelp)
