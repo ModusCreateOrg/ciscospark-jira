@@ -19,6 +19,9 @@ const replyToWebhook = (bot, reply) => {
   })
 }
 
+const linkWithKeyAndTitle = (issue) =>
+  `[${issue.key} - ${issue.fields.summary}](${linkToIssue(issue)})`
+
 export const handleIssueCommentEdited = (bot, event) => {
   const { comment, issue, user } = event
   const link = `${linkToIssue(issue)}?focusedCommentId=${comment.id}#comment-${comment.id}`
@@ -28,7 +31,7 @@ export const handleIssueCommentEdited = (bot, event) => {
 
 export const handleIssueCreated = (bot, event) => {
   const { issue, user } = event
-  const message = `${user.displayName} created a new issue: [${issue.key} - ${issue.fields.summary}](${linkToIssue(issue)})`
+  const message = `${user.displayName} created a new issue: ${linkWithKeyAndTitle(issue)}`
   replyToWebhook(bot, message)
 }
 
@@ -47,13 +50,23 @@ export const handleGeneric = (bot, event) => {
 
 const handleStatusUpdate = (bot, issue, update) => {
   const message = `
-    [${issue.key} - ${issue.fields.summary}](${linkToIssue(issue)}) \
+    ${linkWithKeyAndTitle(issue)} \
     changed status from **${update.fromString}** to **${update.toString}**
   `
   replyToWebhook(bot, message)
 }
 
+export const handleIssueAssigned = (bot, event) => {
+  const { issue } = event
+  const message = `
+    ${linkWithKeyAndTitle(issue)} \
+    has been assigned to ${issue.fields.assignee.displayName}
+  `
+  replyToWebhook(bot, message)
+}
+
 export default {
+  handleIssueAssigned,
   handleIssueCommentEdited,
   handleIssueCreated,
   handleGeneric

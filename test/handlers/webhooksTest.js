@@ -122,7 +122,34 @@ test('sends notification when issue status updated', async t => {
   t.is(messages.length, 1)
   const reply = messages[0]
   t.is(
-    reply.replace(/\s+/g, " ").trim(),
+    reply.replace(/\s+/g, ' ').trim(),
     `[TEST-12 - Example issue](${process.env.JIRA_HOST}/browse/TEST-12) changed status from **In Progress** to **Done**`
+  )
+})
+
+test('sends notification when issue assigned', async t => {
+  const { module } = getModuleMock()
+  const { handleIssueAssigned } = module
+
+  process.env.JIRA_WEBHOOK_ROOM = roomName
+
+  const issueAssignedEvent = {
+    issue: {
+      key: 'TEST-12',
+      fields: {
+        assignee: {
+          displayName: 'Randy Butternubs'
+        },
+        summary: 'Example issue'
+      }
+    }
+  }
+
+  await handleIssueAssigned(bot, issueAssignedEvent)
+  t.is(messages.length, 1)
+  const reply = messages[0]
+  t.is(
+    reply.replace(/\s+/g, ' ').trim(),
+    `[TEST-12 - Example issue](${process.env.JIRA_HOST}/browse/TEST-12) has been assigned to Randy Butternubs`
   )
 })

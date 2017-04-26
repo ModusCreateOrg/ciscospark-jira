@@ -4,6 +4,7 @@ export default (controller, handlers) => {
   controller.on('jira:issue_comment_edited', handlers.webhooks.handleIssueCommentEdited)
   controller.on('jira:issue_created', handlers.webhooks.handleIssueCreated)
   controller.on('jira:issue_generic', handlers.webhooks.handleGeneric)
+  controller.on('jira:issue_assigned', handlers.webhooks.handleIssueAssigned)
 
   controller.hears(['list my open issues'], 'direct_mention,direct_message', handlers.issues.listMyIssues)
 
