@@ -75,12 +75,24 @@ export const getIssueStatus = async (bot, message) => {
 }
 
 export const commentOnIssue = async (bot, message) => {
-  const [issueKey, body] = message.match.slice(-2)
+  let [issueKey, body] = message.match.slice(-2)
+
+  let displayName
+  try {
+    const user = await bot.botkit.api.people.get(message.original_message.personId)
+    displayName = user.displayName
+  } catch (error) {
+    console.log(`WARNING: Could not find display name for ${message.user}`)
+  }
+  if (displayName) {
+    body = `${displayName} commented via Cisco Spark:\n\n${body}`
+  }
+
   let response
   try {
     response = await jira.commentOnIssue(issueKey, body)
   } catch (error) {
-    const errorStr = getErrorMessage(error, 'I had trouble posting the comment.')
+    const errorStr = getErrorMessage(error, 'I had trouble posting your comment.')
     bot.reply(message, `I could not add your comment on "${issueKey}". ${errorStr}`)
     return
   }
