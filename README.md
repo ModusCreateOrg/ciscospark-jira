@@ -49,6 +49,7 @@ Here are instructions for deploying on Heroku, but this can be adapted to any ho
    e.g.
 
         heroku config:add PUBLIC_ADDRESS=https://my-spark-bot.herokuapp.com
+        heroku config:add JIRA_HOST=https://test.atlassian.net
 
 1. Push to heroku
 
@@ -92,6 +93,28 @@ Run the tests:
 
     yarn test
 
-Run the test watcher:
+Run the test watcher, which will re-run tests after every file change:
 
     yarn test-watch
+
+
+### Code Structure
+
+The code is laid out with the following structure:
+
+```
+src
+├── attachHandlers.js  # Where all the phrases that will invoke handlers are specified
+├── controller.js      # Creates the botkit `sparkbot` controller, configured via the env
+├── handlers           # Directory containing all the functions that handle messages/webhooks received
+│   ├── index.js       # Contains generic message handlers ("help", for example)
+│   ├── issues.js      # All message handlers related to issue management
+│   └── webhooks.js    # All webhook handlers
+├── index.js           # The entry point of the bot
+├── jira.js            # Wrapper around JIRA api
+└── server.js          # Webserver that handles incoming Spark messages and JIRA webhooks
+```
+
+Separating the handlers from the controller (in this case, specifying expected phrases
+in `attachHandlers.js`) allows us to test the pattern matching (in `tests/attachHandlersTest.js`)
+separate from the functionality of the handler (in `tests/handlers/*.js`).
