@@ -118,3 +118,68 @@ src
 Separating the handlers from the controller (in this case, specifying expected phrases
 in `attachHandlers.js`) allows us to test the pattern matching (in `tests/attachHandlersTest.js`)
 separate from the functionality of the handler (in `tests/handlers/*.js`).
+
+
+### Adding more commands
+
+Adding a new command requires two steps: writing a new handler and attaching that handler to the bot.
+
+#### 1. Write a new handler
+
+Add a function in `src/handlers/` that will handle the message from Spark. The
+function should take two arguments, the `bot` (the botkit instance) and the
+`message` (that invoked this handler).
+
+The handler will be passed as the `callback` argument to [the botkit
+`hears`](https://github.com/howdyai/botkit/blob/fca645275c8d3ed462110062dcda8e804da77bb0/docs/readme.md#matching-patterns-and-keywords-with-hears)
+function, so the `message` argument will contain any available "match" information.
+
+To send a reply to the message, you can use the `bot.reply` method, passing in the
+original message (so the bot knows where to send the reply to) and the intended
+reply: `bot.reply(message, "Hello World")`.
+
+#### 2. Attach the new handler
+
+Now that we have a function to reply to a message, we need to tell the botkit
+controller when to invoke the function. This is accomplished by adding to
+`src/attachHandlers.js`.
+
+For example, if we added a `helloWorldHandler` in `src/handlers/index.js`, we could
+add the following line to invoke our new command when a user says "hello" to our bot:
+
+```javascript
+controller.hears(['hello'], 'direct_mention,direct_message', handlers.helloWorldHandler)
+```
+
+
+### Adding more webhooks
+
+Similar to adding a new command, adding a new webhook is a two-step process. First,
+we need to add a handler for the incoming webhook notification and then tell
+botkit when to invoke our handler.
+
+#### 1. Write a new handler
+
+You can add a new function in `src/handlers/webhooks.js` that accepts two parameters:
+`bot`, the botkit instance and `event` the JSON body of the webhook notification
+from JIRA.
+
+In order to send a message, we need to know which room to post the webhook notifications
+to, specified by the `JIRA_WEBHOOK_ROOM` environment variable. For your convenience,
+a `replyToWebhook` function exists that accepts the `bot` and the intended reply
+and looks up the correct room to post to for you.
+
+#### 2. Attach the webhook handler
+
+Now that we have the webhook handler, we need to tell botkit when to invoke our
+handler. This is again done in `src/attachHandlers.js`.
+
+Rather than using `hears`, we can use the `on` function to invoke our handler
+when the webhook event comes in. When a webhook is received, an event is triggered
+with the name of the webhook event.
+
+For example, to respond to a `issue_created` event, we can add the following line:
+
+```javascript
+controller.on('jira:issue_created', handlers.webhooks.issueCreatedHandler)
+```

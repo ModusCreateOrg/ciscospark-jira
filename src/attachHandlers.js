@@ -30,5 +30,5 @@ export default (controller, handlers) => {
     `^comment on ([^ ]*) [${quotes}]?([^${quotes}]*)[${quotes}]?`
   ], 'direct_mention,direct_message', handlers.issues.commentOnIssue)
 
-  controller.hears([/^$/, 'help'], 'direct_mention', handlers.displayHelp)
+  controller.hears([/^$/, 'help'], 'direct_mention,direct_message', handlers.displayHelp)
 }
