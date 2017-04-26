@@ -21,4 +21,8 @@ export default (controller, handlers) => {
     'what is the status of ([^?]*)?',
     '^status ([^?]*)'
   ], 'direct_mention,direct_message', handlers.issues.getIssueStatus)
+
+  controller.hears([
+    '^comment on ([^ ]*) ["“”]?([^"“”]*)["“”]?'
+  ], 'direct_mention,direct_message', handlers.issues.commentOnIssue)
 }

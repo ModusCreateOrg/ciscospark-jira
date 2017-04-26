@@ -63,9 +63,16 @@ export const getIssue = async (issueKey) => {
   return await api.get(`/issue/${issueKey}`)
 }
 
+export const commentOnIssue = async (issueKey, body) => {
+  return await api.post(`/issue/${issueKey}/comment`, {
+    body: { body }
+  })
+}
+
 export const linkToIssue = issue => `${process.env.JIRA_HOST}/browse/${issue.key}`
 
 export default {
+  commentOnIssue,
   createIssue,
   findUsers,
   getIssue,

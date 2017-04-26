@@ -9,6 +9,7 @@ const mockUsers = require('../fixtures/user_search.json')
 const getModuleMock = () => {
   const mocks = {
     createIssue: sinon.stub(),
+    commentOnIssue: sinon.stub(),
     getIssue: sinon.stub(),
     getIssues: sinon.stub().returns(mockIssues),
     findUsers: sinon.stub().returns(mockUsers),
@@ -144,6 +145,35 @@ test('get issue status fails', async t => {
   getIssueMock.throws({ error })
 
   await getIssueStatus(bot, { match: ['status TEST-12', 'TEST-12'] })
+
+  t.is(messages.length, 1)
+  const reply = messages[0]
+  t.true(reply.includes(error.errorMessages[0]))
+})
+
+test('comment on issue succeeds', async t => {
+  const { module, mocks } = getModuleMock()
+  const { commentOnIssue } = module
+  const { commentOnIssue: commentOnIssueMock } = mocks
+  const comment = { id: 62 }
+  commentOnIssueMock.returns(comment)
+
+  await commentOnIssue(bot, { match: ['comment on TEST-12 foo', 'TEST-12', 'foo'] })
+
+  t.true(commentOnIssueMock.calledWith('TEST-12', 'foo'))
+  t.is(messages.length, 1)
+  const reply = messages[0]
+  t.true(reply.includes("I've added your comment"))
+})
+
+test('get issue status fails', async t => {
+  const { module, mocks } = getModuleMock()
+  const { commentOnIssue } = module
+  const { commentOnIssue: commentOnIssueMock } = mocks
+  const error = { errorMessages: ['Ya dun goofed'] }
+  commentOnIssueMock.throws({ error })
+
+  await commentOnIssue(bot, { match: ['status TEST-12', 'TEST-12'] })
 
   t.is(messages.length, 1)
   const reply = messages[0]
