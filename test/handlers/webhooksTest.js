@@ -1,33 +1,6 @@
 import test from 'ava'
-import proxyquire from 'proxyquire'
 import bot, { messages } from '../helpers/mockBot'
-
-const roomName = 'My Spark Room'
-const getModuleMock = () => {
-  const mocks = {
-    default: {
-      api: {
-        rooms: {
-          list: () => {
-            return Promise.resolve({
-              items: [{
-                title: roomName,
-                id: '8675309'
-              }]
-            })
-          }
-        }
-      }
-    }
-  }
-  const module = proxyquire('../../src/handlers/webhooks', {
-    '../controller': mocks
-  })
-  return {
-    module,
-    mocks
-  }
-}
+import webhooks from '../../src/handlers/webhooks'
 
 const webhookEvent = {
   comment: {
@@ -44,10 +17,7 @@ const webhookEvent = {
 }
 
 test('sends notification when issue comment edited', async t => {
-  const { module } = getModuleMock()
-  const { handleIssueCommentEdited } = module
-
-  process.env.JIRA_WEBHOOK_ROOM = roomName
+  const { handleIssueCommentEdited } = webhooks
 
   await handleIssueCommentEdited(bot, webhookEvent)
 
@@ -59,22 +29,8 @@ test('sends notification when issue comment edited', async t => {
   )
 })
 
-test('does not send message when room not found', async t => {
-  const { module } = getModuleMock()
-  const { handleIssueCommentEdited } = module
-
-  process.env.JIRA_WEBHOOK_ROOM = 'non existant room'
-
-  await handleIssueCommentEdited(bot, webhookEvent)
-
-  t.is(messages.length, 0)
-})
-
 test('sends notification when issue created', async t => {
-  const { module } = getModuleMock()
-  const { handleIssueCreated } = module
-
-  process.env.JIRA_WEBHOOK_ROOM = roomName
+  const { handleIssueCreated } = webhooks
 
   const createIssueEvent = {
     user: {
@@ -98,10 +54,7 @@ test('sends notification when issue created', async t => {
 })
 
 test('sends notification when issue status updated', async t => {
-  const { module } = getModuleMock()
-  const { handleGeneric } = module
-
-  process.env.JIRA_WEBHOOK_ROOM = roomName
+  const { handleGeneric } = webhooks
 
   const statusUpdateEvent = {
     issue: {
@@ -128,10 +81,7 @@ test('sends notification when issue status updated', async t => {
 })
 
 test('sends notification when issue assigned', async t => {
-  const { module } = getModuleMock()
-  const { handleIssueAssigned } = module
-
-  process.env.JIRA_WEBHOOK_ROOM = roomName
+  const { handleIssueAssigned } = webhooks
 
   const issueAssignedEvent = {
     issue: {

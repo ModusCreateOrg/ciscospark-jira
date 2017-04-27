@@ -16,7 +16,8 @@
     "transpile": "babel --out-dir=lib src",
     "lint": "eslint .",
     "fix": "eslint . --fix",
-    "heroku-postbuild": "npm run transpile"
+    "heroku-postbuild": "npm run transpile",
+    "list-rooms": "./inenv.sh node scripts/listRooms.js"
   },
   "author": "",
   "license": "MIT",
