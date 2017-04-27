@@ -65,15 +65,15 @@ instructions on running the bot via Docker locally.
 1. Clone this repo
 1. Build the Docker image:
 
-      docker build -t myjirabot .
+        docker build -t myjirabot .
 
 1. Copy `.env` to `.env.local` and customize
 
-      cp .env .env.local
+        cp .env .env.local
 
 1. Run the Docker image, specifying the newly created env file:
 
-      docker run -it --env-file .env.local myjirabot
+        docker run -it --env-file .env.local myjirabot
 
 ## Development
 
