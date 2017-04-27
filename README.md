@@ -32,7 +32,7 @@ want to receive in the administration console.
 
 Additionally, you need to specify which room to post the webhook notifications
 to. This is done using the `JIRA_WEBHOOK_ROOM` environment variable and should
-be the title of the room you want notifications posted to.
+be the ID of the room you want notifications posted to.
 
 ## Deploying your own bot
 
