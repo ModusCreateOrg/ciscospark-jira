@@ -59,7 +59,7 @@ Here are instructions for deploying on Heroku, but this can be adapted to any ho
 ## Running the bot via Docker
 
 A Dockerfile has been included to run the bot via Docker. Here are some basic
-instructions on running the bot via Docker locally/
+instructions on running the bot via Docker locally.
 
 1. [Create a new bot account](https://developer.ciscospark.com/add-bot.html) on Cisco Spark
 1. Clone this repo
@@ -67,15 +67,13 @@ instructions on running the bot via Docker locally/
 
       docker build -t myjirabot .
 
-1. Create a file containing the required environment variables:
+1. Copy `.env` to `.env.local` and customize
 
-      echo "PUBLIC_ADDRESS=https://myjirabot.org
-      > ACCESS_TOKEN=my_access_token
-      > JIRA_HOST=https://example.atlassian.net" > .env.docker
+      cp .env .env.local
 
 1. Run the Docker image, specifying the newly created env file:
 
-      docker run -it --env-file .env.docker myjirabot
+      docker run -it --env-file .env.local myjirabot
 
 ## Development
 
@@ -97,6 +95,11 @@ instructions on running the bot via Docker locally/
 1. Start the local development server
 
         yarn server-dev
+
+1. If using Docker, you can run the image specifying the environment file and
+   exposing port 3000:
+
+        docker run -it --env-file .env.local --publish 3000:3000 myjirabot
 
 1. Run ngrok (or something like it).
 
