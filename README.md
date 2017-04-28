@@ -2,6 +2,8 @@
 
 This is a bot for Cisco Spark that integrates with JIRA.
 
+[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
+
 ## Spark Configuration
 
 In order for the bot to communicate with Cisco Spark, a couple configuration values

@@ -1,0 +1,38 @@
+{
+  "name": "JIRA bot for Cisco Spark",
+  "description": "JIRA bot for Cisco Spark",
+  "repository": "https://github.com/promptworks/ciscospark-jira",
+  "env": {
+    "PUBLIC_ADDRESS": {
+      "description": "The address at which your bot can be reached. The public address of your Heroku app will be 'https://<App Name>.herokuapp.com",
+      "required": true
+    },
+    "ACCESS_TOKEN": {
+      "description": "The bot's access token from Cisco Spark. Create a new bot account at https://developer.ciscospark.com/add-bot.html if you do not have one.",
+      "required": true
+    },
+    "PORT": {
+      "description": "Port that the bot will run on",
+      "value": "3000",
+      "required": false
+    },
+    "JIRA_HOST": {
+      "description": "The URL to your JIRA instance",
+      "required": true
+    },
+    "JIRA_USERNAME": {
+      "description": "The username of the account to used to authenticate with JIRA. Changes made to JIRA will be performed by this user, so you may want to create a special bot account.",
+      "required": true
+    },
+    "JIRA_PASSWORD": {
+      "description": "The password of the account to used to authenticate with JIRA.",
+      "required": true
+    },
+    "JIRA_WEBHOOK_ROOM": {
+      "description": "The ID of the Spark room to post webhook updates to.",
+      "required": true
+    }
+  },
+  "logo": "https://node-js-sample.herokuapp.com/node.svg",
+  "keywords": ["spark", "cisco", "ciscospark", "jira", "bot", "botkit"]
+}
