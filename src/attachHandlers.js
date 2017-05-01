@@ -30,5 +30,20 @@ export default (controller, handlers) => {
     `^comment on ([^ ]*) [${quotes}]?([^${quotes}]*)[${quotes}]?`
   ], 'direct_mention,direct_message', handlers.issues.commentOnIssue)
 
+  controller.hears([
+    '^list watched tickets',
+    '^what tickets are you watching?'
+  ], 'direct_mention,direct_message', handlers.watch.handleListWatch)
+
+  controller.hears([
+    '^watch(?: ticket)? (.*)',
+    '^start watching(?: ticket)? (.*)'
+  ], 'direct_mention,direct_message', handlers.watch.handleWatchTicket)
+
+  controller.hears([
+    '^unwatch(?: ticket)? (.*)',
+    '^stop watching(?: ticket)? (.*)'
+  ], 'direct_mention,direct_message', handlers.watch.handleUnwatchTicket)
+
   controller.hears([/^$/, 'help'], 'direct_mention,direct_message', handlers.displayHelp)
 }

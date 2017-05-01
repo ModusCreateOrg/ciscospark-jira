@@ -48,6 +48,10 @@ Here are instructions for deploying on Heroku, but this can be adapted to any ho
 
         heroku apps:create my-spark-bot
 
+1. Add a Redis addon
+
+        heroku addons:create heroku-redis:hobby-dev
+
 1. Add environment variables to the heroku app to match those in `.env`.
    e.g.
 

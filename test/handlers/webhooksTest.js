@@ -1,7 +1,9 @@
 import test from 'ava'
+import sinon from 'sinon'
+import proxyquire from 'proxyquire'
 import bot, { messages } from '../helpers/mockBot'
-import webhooks from '../../src/handlers/webhooks'
 
+const issueKey = 'TEST-12'
 const webhookEvent = {
   comment: {
     id: 10101
@@ -10,34 +12,55 @@ const webhookEvent = {
     displayName: 'Randy Butternubs'
   },
   issue: {
-    key: 'TEST-12'
+    key: issueKey
   },
   issue_event_type_name: 'issue_comment_edited',
   webhookEvent: 'jira:issue_updated'
 }
 
+const replyToWebhookStub = sinon.stub()
+const resetStubs = () => replyToWebhookStub.reset()
+
+test.beforeEach(resetStubs)
+
+const getModule = () => {
+  return proxyquire('../../src/handlers/webhooks', {
+    '../utils/replyToWebhook': {
+      default: replyToWebhookStub
+    }
+  })
+}
+
+const assertStubCalledWith = (t, bot, reply, issueKey) => {
+  t.true(replyToWebhookStub.calledOnce)
+
+  const [callBot, callReply, callIssueKey] = replyToWebhookStub.firstCall.args
+  t.is(callBot, bot)
+  t.is(callReply.replace(/\s+/g, ' ').trim(), reply)
+  t.is(callIssueKey, issueKey)
+}
+
 test('sends notification when issue comment edited', async t => {
-  const { handleIssueCommentEdited } = webhooks
+  const { handleIssueCommentEdited } = getModule()
 
   await handleIssueCommentEdited(bot, webhookEvent)
 
-  t.is(messages.length, 1)
-  const reply = messages[0]
-  t.is(
-    reply,
-    `Randy Butternubs edited a comment on [TEST-12](${process.env.JIRA_HOST}/browse/TEST-12?focusedCommentId=10101#comment-10101)`
+  assertStubCalledWith(t,
+    bot,
+    `Randy Butternubs edited a comment on [TEST-12](${process.env.JIRA_HOST}/browse/TEST-12?focusedCommentId=10101#comment-10101)`,
+    issueKey
   )
 })
 
 test('sends notification when issue created', async t => {
-  const { handleIssueCreated } = webhooks
+  const { handleIssueCreated } = getModule()
 
   const createIssueEvent = {
     user: {
       displayName: 'Randy Butternubs'
     },
     issue: {
-      key: 'TEST-11',
+      key: 'TEST-12',
       fields: {
         summary: 'This is a new issue'
       }
@@ -45,16 +68,15 @@ test('sends notification when issue created', async t => {
   }
   await handleIssueCreated(bot, createIssueEvent)
 
-  t.is(messages.length, 1)
-  const reply = messages[0]
-  t.is(
-    reply,
-    `Randy Butternubs created a new issue: [TEST-11 - This is a new issue](${process.env.JIRA_HOST}/browse/TEST-11)`
+  assertStubCalledWith(t,
+    bot,
+    `Randy Butternubs created a new issue: [TEST-12 - This is a new issue](${process.env.JIRA_HOST}/browse/TEST-12)`,
+    issueKey
   )
 })
 
 test('sends notification when issue status updated', async t => {
-  const { handleGeneric } = webhooks
+  const { handleGeneric } = getModule()
 
   const statusUpdateEvent = {
     issue: {
@@ -72,16 +94,16 @@ test('sends notification when issue status updated', async t => {
     }
   }
   await handleGeneric(bot, statusUpdateEvent)
-  t.is(messages.length, 1)
-  const reply = messages[0]
-  t.is(
-    reply.replace(/\s+/g, ' ').trim(),
-    `[TEST-12 - Example issue](${process.env.JIRA_HOST}/browse/TEST-12) changed status from **In Progress** to **Done**`
+
+  assertStubCalledWith(t,
+    bot,
+    `[TEST-12 - Example issue](${process.env.JIRA_HOST}/browse/TEST-12) changed status from **In Progress** to **Done**`,
+    issueKey
   )
 })
 
 test('sends notification when issue assigned', async t => {
-  const { handleIssueAssigned } = webhooks
+  const { handleIssueAssigned } = getModule()
 
   const issueAssignedEvent = {
     issue: {
@@ -96,10 +118,10 @@ test('sends notification when issue assigned', async t => {
   }
 
   await handleIssueAssigned(bot, issueAssignedEvent)
-  t.is(messages.length, 1)
-  const reply = messages[0]
-  t.is(
-    reply.replace(/\s+/g, ' ').trim(),
-    `[TEST-12 - Example issue](${process.env.JIRA_HOST}/browse/TEST-12) has been assigned to Randy Butternubs`
+
+  assertStubCalledWith(t,
+    bot,
+    `[TEST-12 - Example issue](${process.env.JIRA_HOST}/browse/TEST-12) has been assigned to Randy Butternubs`,
+    issueKey
   )
 })
