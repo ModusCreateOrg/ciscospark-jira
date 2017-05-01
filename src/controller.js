@@ -10,7 +10,7 @@ import args from 'promisify-node/utils/args'
 // `all(cb, options)`. To make this promisify-able, we take advantage of
 // being able to pass in a "test" function and check whether either of the last
 // two arguments is callback-like.
-const promisifyHack = (exports, exportsName, parentKeyName) => (
+const promisifyHack = (exports) => (
   callbacks.indexOf(args(exports).slice(-2)[0]) > -1 ||
   callbacks.indexOf(args(exports).slice(-1)[0]) > -1
 )
