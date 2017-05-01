@@ -3,6 +3,8 @@ machine :
     - mkdir ~/.yarn-cache
   node:
     version: 7.0.0
+  services:
+    - redis
 
 dependencies:
   pre:
