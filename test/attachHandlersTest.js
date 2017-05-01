@@ -10,8 +10,29 @@ const sendMessage = (text) =>
     text
   }])
 
+const testMessages = (t, validMessages, expectedHandler, expectedMatches) => {
+  for (const message of validMessages) {
+    sendMessage(message)
+    t.true(
+      expectedHandler.calledOnce,
+      `expected handler was not called for message ${message}`
+    )
+    const { match } = expectedHandler.firstCall.args[1]
+    if (expectedMatches.length) {
+      t.deepEqual(match.slice(-expectedMatches.length), expectedMatches)
+    }
+
+    resetStubs()
+  }
+}
+
 const handlers = {
   handleJoin: sinon.stub(),
+  watch: {
+    handleListWatch: sinon.stub(),
+    handleUnwatchTicket: sinon.stub(),
+    handleWatchTicket: sinon.stub()
+  },
   webhooks: {
     handleIssueCommentEdited: sinon.stub()
   },
@@ -25,6 +46,7 @@ const handlers = {
 }
 
 const resetStubs = () => {
+  Object.keys(handlers.watch).forEach(handler => handlers.watch[handler].reset())
   Object.keys(handlers.webhooks).forEach(handler => handlers.webhooks[handler].reset())
   Object.keys(handlers.issues).forEach(handler => handlers.issues[handler].reset())
 }
@@ -55,18 +77,7 @@ test('bot handles listing issues for another user', t => {
     'list issues assigned to george',
     'list open issues assigned to george'
   ]
-
-  for (const message of validMessages) {
-    sendMessage(message)
-    t.true(
-      handlers.issues.listIssuesForUser.calledOnce,
-      `expected handler was not called for message ${message}`
-    )
-    const { match } = handlers.issues.listIssuesForUser.firstCall.args[1]
-    t.is(match[match.length - 1], 'george')
-
-    resetStubs()
-  }
+  testMessages(t, validMessages, handlers.issues.listIssuesForUser, ['george'])
 })
 
 test('bot handles creating a new issue', t => {
@@ -79,13 +90,14 @@ test('bot handles creating a new issue', t => {
     { type: 'bug', message: 'create test bug “lorem ipsum”' }
   ]
 
+  const handler = handlers.issues.createIssue
   for (const message of validMessages) {
     sendMessage(message.message)
     t.true(
-      handlers.issues.createIssue.calledOnce,
+      handler.calledOnce,
       `expected handler was not called for message ${message.message}`
     )
-    const { match } = handlers.issues.createIssue.firstCall.args[1]
+    const { match } = handler.firstCall.args[1]
     const [ original, _, project, type, title ] = match
     t.is(original, message.message)
     t.is(project, 'test')
@@ -104,18 +116,7 @@ test('bot handles getting status of an issue', t => {
     'status TEST-12',
     'what is the status of TEST-12?'
   ]
-
-  for (const message of validMessages) {
-    sendMessage(message)
-    t.true(
-      handlers.issues.getIssueStatus.calledOnce,
-      `expected handler was not called for message ${message}`
-    )
-    const { match } = handlers.issues.getIssueStatus.firstCall.args[1]
-    t.is(match[match.length - 1], 'TEST-12')
-
-    resetStubs()
-  }
+  testMessages(t, validMessages, handlers.issues.getIssueStatus, ['TEST-12'])
 })
 
 test('bot handles commenting on an issue', t => {
@@ -125,18 +126,33 @@ test('bot handles commenting on an issue', t => {
     'comment on TEST-12 “this is my comment"',
     'comment on TEST-12 “this is my comment”'
   ]
+  testMessages(t, validMessages, handlers.issues.commentOnIssue, ['TEST-12', 'this is my comment'])
+})
 
-  for (const message of validMessages) {
-    sendMessage(message)
-    t.true(
-      handlers.issues.commentOnIssue.calledOnce,
-      `expected handler was not called for message ${message}`
-    )
-    const { match } = handlers.issues.commentOnIssue.firstCall.args[1]
-    const [key, comment] = match.slice(-2)
-    t.is(key, 'TEST-12')
-    t.is(comment, 'this is my comment')
+test('bot handles watching a ticket', t => {
+  const validMessages = [
+    'start watching TEST-17',
+    'start watching ticket TEST-17',
+    'watch TEST-17',
+    'watch ticket TEST-17'
+  ]
+  testMessages(t, validMessages, handlers.watch.handleWatchTicket, ['TEST-17'])
+})
 
-    resetStubs()
-  }
+test('bot handles unwatching a ticket', t => {
+  const validMessages = [
+    'stop watching TEST-17',
+    'stop watching ticket TEST-17',
+    'unwatch TEST-17',
+    'unwatch ticket TEST-17'
+  ]
+  testMessages(t, validMessages, handlers.watch.handleUnwatchTicket, ['TEST-17'])
+})
+
+test('bot handles listing watched tickets', t => {
+  const validMessages = [
+    'what tickets are you watching?',
+    'list watched tickets'
+  ]
+  testMessages(t, validMessages, handlers.watch.handleListWatch, [])
 })

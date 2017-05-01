@@ -1,4 +1,5 @@
 import issues from './issues'
+import watch from './watch'
 import webhooks from './webhooks'
 
 const displayHelp = (bot, message) => bot.reply(message, `
@@ -26,5 +27,6 @@ export default {
   displayHelp,
   handleJoin,
   issues,
+  watch,
   webhooks
 }
