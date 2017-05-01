@@ -35,8 +35,12 @@ The URL should be `<PUBLIC_ADDRESS>/jira/receive`, where `<PUBLIC_ADDRESS>` is
 the same URL as specified above. Be sure to select the notifications that you
 want to receive in the administration console.
 
-Additionally, you need to specify which room to post the webhook notifications
-to. This is done using the `JIRA_WEBHOOK_ROOM` environment variable and should
+Once the webhooks are setup in JIRA, you can use the `watch` command with the bot
+to receive notifications of updates to the watched issues. The updates will be
+posted to whichever room the command was given in.
+
+Additionally, you can specify a room to receive all webhook notifications.
+This is done using the `JIRA_WEBHOOK_ROOM` environment variable and should
 be the ID of the room you want notifications posted to. A script to list rooms
 and their IDs (`yarn list-rooms`) has been included to make finding the desired
 room ID easier.
