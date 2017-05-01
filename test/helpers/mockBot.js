@@ -1,8 +1,13 @@
 import test from 'ava'
 import { core } from 'botkit'
+import promisify from 'promisify-node'
 
+export const sources = []
 export const messages = []
-test.beforeEach(() => { messages.length = 0 })
+test.beforeEach(() => {
+  messages.length = 0
+  sources.length = 0
+})
 
 const messageLogger = function (botkit, config) {
   this.botkit = botkit
@@ -16,7 +21,7 @@ const messageLogger = function (botkit, config) {
     })
   }
 
-  this.reply = (src, resp) => messages.push(resp)
+  this.reply = (src, resp) => ( sources.push(src) && messages.push(resp) )
 
   this.findConversation = (message, cb) => {
     botkit.debug('DEFAULT FIND CONVO')
@@ -26,6 +31,24 @@ const messageLogger = function (botkit, config) {
 
 export const fakeController = core({ debug: false, log: false })
 fakeController.defineBot(messageLogger)
+
+fakeController.storage.tickets = promisify({
+  get: function(ticket_id, cb) {
+    cb(null, fakeController.memory_store.tickets[ticket_id]);
+  },
+  save: function(ticket, cb) {
+    if (ticket.id) {
+      fakeController.memory_store.tickets[ticket.id] = ticket;
+      cb(null, ticket.id);
+    } else {
+      cb('No ID specified');
+    }
+  },
+  all: function(cb) {
+    cb(null, fakeController.memory_store.tickets);
+  }
+})
+fakeController.memory_store.tickets = {}
 
 export const bot = fakeController.spawn()
 export default bot
