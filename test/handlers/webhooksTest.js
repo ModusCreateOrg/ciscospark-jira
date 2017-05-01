@@ -1,7 +1,7 @@
 import test from 'ava'
 import sinon from 'sinon'
 import proxyquire from 'proxyquire'
-import bot, { messages } from '../helpers/mockBot'
+import bot from '../helpers/mockBot'
 
 const issueKey = 'TEST-12'
 const webhookEvent = {

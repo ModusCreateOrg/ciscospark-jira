@@ -1,8 +1,11 @@
 # JIRA bot for Cisco Spark
 
+[![CircleCI](https://circleci.com/gh/promptworks/ciscospark-jira.svg?style=svg)](https://circleci.com/gh/promptworks/ciscospark-jira)
+
 This is a bot for Cisco Spark that integrates with JIRA.
 
 [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
+
 
 ## Spark Configuration
 
