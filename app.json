@@ -2,7 +2,7 @@
   "name": "JIRA bot for Cisco Spark",
   "description": "JIRA bot for Cisco Spark",
   "repository": "https://github.com/promptworks/ciscospark-jira",
-  "addons": "heroku-redis",
+  "addons": ["heroku-redis"],
   "env": {
     "PUBLIC_ADDRESS": {
       "description": "The address at which your bot can be reached. The public address of your Heroku app will be 'https://<App Name>.herokuapp.com",
