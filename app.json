@@ -31,7 +31,7 @@
     },
     "JIRA_WEBHOOK_ROOM": {
       "description": "The ID of the Spark room to post webhook updates to.",
-      "required": true
+      "required": false
     }
   },
   "logo": "https://node-js-sample.herokuapp.com/node.svg",
