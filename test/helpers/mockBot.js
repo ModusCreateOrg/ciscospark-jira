@@ -45,10 +45,11 @@ fakeController.storage.tickets = promisify({
     }
   },
   all: function(cb) {
-    cb(null, fakeController.memory_store.tickets);
+    cb(null, Object.values(fakeController.memory_store.tickets));
   }
 })
 fakeController.memory_store.tickets = {}
+test.afterEach(() => fakeController.memory_store.tickets = {})
 
 export const bot = fakeController.spawn()
 export default bot
