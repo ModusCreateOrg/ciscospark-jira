@@ -20,6 +20,7 @@ const controller = sparkbot({
   log: true,
   public_address: process.env.PUBLIC_ADDRESS || 'https://example.com',
   ciscospark_access_token: process.env.ACCESS_TOKEN || 'token',
+  secret: process.env.SPARK_SECRET || Math.random().toString(36).substr(2),
   studio_token: process.env.STUDIO_TOKEN,
   storage: promisify(redisStorage({
     url: process.env.REDIS_URL,

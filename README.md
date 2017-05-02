@@ -14,6 +14,8 @@ are expected to exist in the environment (or `.env` or `.env.local` files):
 
 * `PUBLIC_ADDRESS` - the address at which your bot can be reached.
 * `ACCESS_TOKEN` - the bot's access token from Cisco Spark
+* `SPARK_SECRET` - [secret for validating the origin of
+  webhooks](https://developer.ciscospark.com/webhooks-explained.html#auth)
 
 ## JIRA Configuration
 
