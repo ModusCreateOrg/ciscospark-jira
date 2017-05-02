@@ -2,6 +2,7 @@ import issues from './issues'
 import watch from './watch'
 import webhooks from './webhooks'
 import jira from '../jira'
+import jiraWebhookUrl from '../utils/jiraWebhookUrl'
 
 const displayHelp = (bot, message) => bot.reply(message, `
   Here are some of the things I can do:
@@ -31,7 +32,7 @@ export const handleJoin = (bot, message) =>
 const setupInstructions = `
   A JIRA administrator will need to head over to \
   ${process.env.JIRA_HOST}/plugins/servlet/webhooks and enter \
-  \`${process.env.PUBLIC_ADDRESS}jira/receive\` for the webhook URL. \
+  \`${jiraWebhookUrl}\` for the webhook URL. \
 `
 
 export const handleSetup = async (bot, message) => {
