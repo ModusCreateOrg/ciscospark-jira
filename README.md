@@ -16,6 +16,12 @@ are expected to exist in the environment (or `.env` or `.env.local` files):
 * `ACCESS_TOKEN` - the bot's access token from Cisco Spark
 * `SPARK_SECRET` - [secret for validating the origin of
   webhooks](https://developer.ciscospark.com/webhooks-explained.html#auth)
+* `LIMIT_TO_ORG` - (optional) ID of the organization that the bot should reply
+  to. Users not in this org sending messages to the bot will receive no reply.
+* `LIMIT_TO_DOMAIN` - (optional) Email domain(s) of users that can message the
+  bot. Users whose email is not in one of these domains are ignored by the bot.
+  If multiple domains are supported, they should be specified as a space-separated
+  list of domains (`"example.com example2.com"`).
 
 ## JIRA Configuration
 

@@ -16,6 +16,14 @@
       "description": "A secret for validating that incoming webhooks originate from Cisco Spark.",
       "required": true
     },
+    "LIMIT_TO_ORG": {
+      "description": "ID of the organization that the bot should reply to. Users not in this org sending messages to the bot will receive no reply.",
+      "required": false
+    },
+    "LIMIT_TO_DOMAIN": {
+      "description": "Email domain(s) of users that can message the bot. Users whose email is not in one of these domains are ignored by the bot.  If multiple domains are supported, they should be specified as a space-separated list of domains.",
+      "required": false
+    },
     "PORT": {
       "description": "Port that the bot will run on",
       "value": "3000",
