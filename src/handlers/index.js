@@ -49,7 +49,7 @@ export const handleSetup = async (bot, message) => {
 export const setupWebhooks = async (bot, message) => {
   const webhookName = 'Cisco Spark JIRA Webhook'
   try {
-    const existingWebhook = await jira.findWebhook(webhookName)
+    const existingWebhook = await jira.findWebhook()
     if (existingWebhook) {
       await jira.updateWebhook(existingWebhook)
     } else {

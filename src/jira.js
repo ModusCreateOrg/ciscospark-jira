@@ -76,9 +76,10 @@ export const isAdmin = async () => {
   return permissions.ADMINISTER.havePermission
 }
 
-export const findWebhook = async (webhookName) => {
+export const findWebhook = async () => {
   const webhooks = await webhookApi.get('/webhook')
-  return webhooks.find(webhook => webhook.name === webhookName)
+  const url = `${process.env.PUBLIC_ADDRESS}jira/receive`
+  return webhooks.find(webhook => webhook.url === url)
 }
 
 const webhookDetails = (name) => ({
