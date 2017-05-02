@@ -31,6 +31,10 @@ To be notified of events via webhooks, you must
 [register
 the webhook via the JIRA administration console](https://developer.atlassian.com/jiradev/jira-apis/webhooks#Webhooks-jiraadmin).
 
+If the bot's JIRA account is an administrator, the bot can do this itself when
+you tell it to `setup webhooks`.
+
+If the bot is not an administrator, you must setup up webhooks manually.
 The URL should be `<PUBLIC_ADDRESS>/jira/receive`, where `<PUBLIC_ADDRESS>` is
 the same URL as specified above. Be sure to select the notifications that you
 want to receive in the administration console.
