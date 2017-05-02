@@ -28,15 +28,19 @@ const displayHelp = (bot, message) => bot.reply(message, `
 export const handleJoin = (bot, message) =>
   bot.reply(message, 'This trusty JIRA bot is here to help.')
 
+const setupInstructions = `
+  A JIRA administrator will need to head over to \
+  ${process.env.JIRA_HOST}/plugins/servlet/webhooks and enter \
+  \`${process.env.PUBLIC_ADDRESS}jira/receive\` for the webhook URL. \
+`
+
 export const handleSetup = async (bot, message) => {
   const isAdmin = await jira.isAdmin()
   if (!isAdmin) {
     bot.reply(message, `
-      It appears I don't have adminstrator priveleges on JIRA. A site \
-      administrator will need to head over to \
-      ${process.env.JIRA_HOST}/plugins/servlet/webhooks and enter \
-      \`${process.env.PUBLIC_ADDRESS}jira/receive\` for the webhook URL. I recommend \
-      registering for at least the "Issue" events for your requested project.`)
+      It appears I don't have adminstrator priveleges on JIRA. \
+      ${setupInstructions} I recommend registering for at least the "Issue" \
+      events for your requested project.`)
   } else {
     setupWebhooks(bot, message)
   }
@@ -60,9 +64,7 @@ export const setupWebhooks = async (bot, message) => {
     console.log('ERROR: Got error when attempting to setup webhook.', error.message)
     bot.reply(message, `
       Woops! Looks like something went wrong when I tried to setup the webhook. \
-      A JIRA adminstrator will need to head over to \
-      ${process.env.JIRA_HOST}/plugins/servlet/webhooks and enter \
-      \`${process.env.PUBLIC_ADDRESS}jira/receive\` for the webhook URL.`)
+      ${setupInstructions}`)
   }
 }
 
