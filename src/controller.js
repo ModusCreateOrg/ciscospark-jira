@@ -25,7 +25,9 @@ const controller = sparkbot({
   storage: promisify(redisStorage({
     url: process.env.REDIS_URL,
     methods: ['tickets']
-  }), promisifyHack)
+  }), promisifyHack),
+  limit_to_org: process.env.LIMIT_TO_ORG || null,
+  limit_to_domain: (process.env.LIMIT_TO_DOMAIN && process.env.LIMIT_TO_DOMAIN.split(' ')) || null
 })
 
 export default controller
