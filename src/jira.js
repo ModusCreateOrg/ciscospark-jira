@@ -9,6 +9,8 @@ export const api = request.defaults({
   json: true
 })
 
+export const webhookApi = api.defaults({ baseUrl: `${process.env.JIRA_HOST}/rest/webhooks/1.0` })
+
 const logError = (error) => {
   if (error.statusCode && error.statusCode === 401) {
     console.log('ERROR: Got "Unauthorized" error from JIRA API. Please check JIRA bot credentials!')
@@ -69,13 +71,59 @@ export const commentOnIssue = async (issueKey, body) => {
   })
 }
 
+export const isAdmin = async () => {
+  const { permissions } = await api.get('/mypermissions')
+  return permissions.ADMINISTER.havePermission
+}
+
+export const findWebhook = async (webhookName) => {
+  const webhooks = await webhookApi.get('/webhook')
+  return webhooks.find(webhook => webhook.name === webhookName)
+}
+
+const webhookDetails = (name) => ({
+  name,
+  enabled: true,
+  events: [
+    'jira:issue_updated',
+    'jira:issue_created',
+    'jira:issue_deleted'
+  ],
+  excludeBody: false,
+  url: `${process.env.PUBLIC_ADDRESS}jira/receive`
+})
+
+export const createWebhook = async (webhookName) => {
+  const body = webhookDetails(webhookName)
+  return await webhookApi.post('/webhook', { body })
+}
+
+export const updateWebhook = async (existingWebhook) => {
+  const body = webhookDetails(existingWebhook.name)
+  try {
+    return await webhookApi.put(existingWebhook.self, { baseUrl: '', body })
+  } catch (error) {
+    // If we've received a 409, the webhook already exists, but we still need
+    // to make sure it's enabled.
+    if (error.statusCode === 409) {
+      await webhookApi.put(existingWebhook.self, { baseUrl: '', body: { enabled: true } })
+    } else {
+      throw error
+    }
+  }
+}
+
 export const linkToIssue = issue => `${process.env.JIRA_HOST}/browse/${issue.key}`
 
 export default {
   commentOnIssue,
   createIssue,
+  createWebhook,
   findUsers,
+  findWebhook,
   getIssue,
   getIssues,
-  linkToIssue
+  isAdmin,
+  linkToIssue,
+  updateWebhook
 }
