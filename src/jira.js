@@ -15,7 +15,7 @@ const logError = (error) => {
   if (error.statusCode && error.statusCode === 401) {
     console.log('ERROR: Got "Unauthorized" error from JIRA API. Please check JIRA bot credentials!')
   } else {
-    console.log(`ERROR: Got error from JIRA API: ${error.name}`)
+    console.log(`ERROR: Got error from JIRA API: ${error.name} -- ${error.message}`)
   }
 }
 
@@ -40,6 +40,7 @@ export const findUsers = async (searchStr) => {
     return await api.get('/user/search', { qs: { username: searchStr } })
   } catch (error) {
     logError(error)
+    return []
   }
 }
 
