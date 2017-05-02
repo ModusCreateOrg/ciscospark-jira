@@ -12,6 +12,10 @@
       "description": "The bot's access token from Cisco Spark. Create a new bot account at https://developer.ciscospark.com/add-bot.html if you do not have one.",
       "required": true
     },
+    "SPARK_SECRET": {
+      "description": "A secret for validating that incoming webhooks originate from Cisco Spark.",
+      "required": true
+    },
     "PORT": {
       "description": "Port that the bot will run on",
       "value": "3000",
