@@ -1,4 +1,5 @@
 import request from 'request-promise-native'
+import jiraWebhookUrl from './utils/jiraWebhookUrl'
 
 export const api = request.defaults({
   auth: {
@@ -79,8 +80,7 @@ export const isAdmin = async () => {
 
 export const findWebhook = async () => {
   const webhooks = await webhookApi.get('/webhook')
-  const url = `${process.env.PUBLIC_ADDRESS}jira/receive`
-  return webhooks.find(webhook => webhook.url === url)
+  return webhooks.find(webhook => webhook.url === jiraWebhookUrl)
 }
 
 const webhookDetails = (name) => ({
@@ -92,7 +92,7 @@ const webhookDetails = (name) => ({
     'jira:issue_deleted'
   ],
   excludeBody: false,
-  url: `${process.env.PUBLIC_ADDRESS}jira/receive`
+  url: jiraWebhookUrl
 })
 
 export const createWebhook = async (webhookName) => {
