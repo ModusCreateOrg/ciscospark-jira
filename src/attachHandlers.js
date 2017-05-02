@@ -45,5 +45,7 @@ export default (controller, handlers) => {
     '^stop watching(?: ticket)? (.*)'
   ], 'direct_mention,direct_message', handlers.watch.handleUnwatchTicket)
 
+  controller.hears([/^setup$/, /^setup webhooks$/], 'direct_mention,direct_message', handlers.handleSetup)
+
   controller.hears([/^$/, 'help'], 'direct_mention,direct_message', handlers.displayHelp)
 }

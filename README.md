@@ -31,12 +31,20 @@ To be notified of events via webhooks, you must
 [register
 the webhook via the JIRA administration console](https://developer.atlassian.com/jiradev/jira-apis/webhooks#Webhooks-jiraadmin).
 
+If the bot's JIRA account is an administrator, the bot can do this itself when
+you tell it to `setup webhooks`.
+
+If the bot is not an administrator, you must setup up webhooks manually.
 The URL should be `<PUBLIC_ADDRESS>/jira/receive`, where `<PUBLIC_ADDRESS>` is
 the same URL as specified above. Be sure to select the notifications that you
 want to receive in the administration console.
 
-Additionally, you need to specify which room to post the webhook notifications
-to. This is done using the `JIRA_WEBHOOK_ROOM` environment variable and should
+Once the webhooks are setup in JIRA, you can use the `watch` command with the bot
+to receive notifications of updates to the watched issues. The updates will be
+posted to whichever room the command was given in.
+
+Additionally, you can specify a room to receive all webhook notifications.
+This is done using the `JIRA_WEBHOOK_ROOM` environment variable and should
 be the ID of the room you want notifications posted to. A script to list rooms
 and their IDs (`yarn list-rooms`) has been included to make finding the desired
 room ID easier.
