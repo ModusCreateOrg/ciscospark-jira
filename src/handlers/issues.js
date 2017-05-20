@@ -85,6 +85,38 @@ export const getIssueStatus = async (bot, message) => {
   bot.reply(message, `[${key} - "${summary}"](${jira.linkToIssue(response)}) has status ${name}`)
 }
 
+export const updateIssueStatus = async (bot, message) => {
+  const [issueKey, newStatus] = message.match.slice(-2)
+
+  const { transitions } = await jira.getIssueTransitions(issueKey)
+  const transition = transitions.find(transition => {
+    const { name } = transition
+    return name.toLowerCase() === newStatus.toLowerCase()
+  })
+
+  if (!transition) {
+    const validTransitions = transitions.map(t => t.name).join(', ')
+    bot.reply(
+      message,
+      `I couldn't find any transition for "${newStatus}". Valid options are: ${validTransitions}`
+    )
+    return
+  }
+
+  try {
+    await jira.updateIssueStatus(issueKey, transition.id)
+  } catch (error) {
+    const errorStr = getErrorMessage(error, 'I had trouble transitioning the issue')
+    bot.reply(message, `I could not update the status for "${issueKey}". ${errorStr}`)
+    return
+  }
+
+  bot.reply(
+    message,
+    `Ok, I've updated the status of [${issueKey}](${jira.linkToIssue({ key: issueKey })}) to **${transition.name}**.`
+  )
+}
+
 export const commentOnIssue = async (bot, message) => {
   let [issueKey, body] = message.match.slice(-2)
 
@@ -117,5 +149,6 @@ export default {
   createIssue,
   getIssueStatus,
   listIssuesForUser,
-  listMyIssues
+  listMyIssues,
+  updateIssueStatus
 }

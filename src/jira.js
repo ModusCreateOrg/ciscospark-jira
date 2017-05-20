@@ -63,9 +63,12 @@ export const createIssue = async (projectKey, issueType, issueSummary) => {
   })
 }
 
-export const getIssue = async (issueKey) => {
-  return await api.get(`/issue/${issueKey}`)
-}
+export const getIssue = (issueKey) => api.get(`/issue/${issueKey}`)
+
+export const getIssueTransitions = (issueKey) => api.get(`/issue/${issueKey}/transitions`)
+
+export const updateIssueStatus = (issueKey, transitionId) =>
+  api.post(`/issue/${issueKey}/transitions`, { body: { transition: { id: transitionId } } })
 
 export const getIssueTypes = async () => {
   const allTypes = await api.get('/issuetype')
@@ -130,8 +133,10 @@ export default {
   findWebhook,
   getIssue,
   getIssues,
+  getIssueTransitions,
   getIssueTypes,
   isAdmin,
   linkToIssue,
+  updateIssueStatus,
   updateWebhook
 }
