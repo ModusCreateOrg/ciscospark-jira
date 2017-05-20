@@ -42,7 +42,8 @@ const handlers = {
     createIssue: sinon.stub(),
     getIssueStatus: sinon.stub(),
     listMyIssues: sinon.stub(),
-    listIssuesForUser: sinon.stub()
+    listIssuesForUser: sinon.stub(),
+    updateIssueStatus: sinon.stub()
   }
 }
 
@@ -119,6 +120,18 @@ test('bot handles getting status of an issue', t => {
     'what is the status of TEST-12?'
   ]
   testMessages(t, validMessages, handlers.issues.getIssueStatus, ['TEST-12'])
+})
+
+test('bot handles updating status of an issue', t => {
+  const validMessages = [
+    'update the status of TEST-12 to in progress',
+    'update status of TEST-12 to in progress',
+    'change the status of TEST-12 to in progress',
+    'change status of TEST-12 to in progress',
+    'set the status of TEST-12 to in progress',
+    'set status of TEST-12 to in progress'
+  ]
+  testMessages(t, validMessages, handlers.issues.updateIssueStatus, ['TEST-12', 'in progress'])
 })
 
 test('bot handles commenting on an issue', t => {
