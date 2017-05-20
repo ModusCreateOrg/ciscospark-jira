@@ -6,7 +6,8 @@ import bot from '../helpers/mockBot'
 const issueKey = 'TEST-12'
 const webhookEvent = {
   comment: {
-    id: 10101
+    id: 10101,
+    body: 'Test comment'
   },
   user: {
     displayName: 'Randy Butternubs'
@@ -36,9 +37,25 @@ const assertStubCalledWith = (t, bot, reply, issueKey) => {
 
   const [callBot, callReply, callIssueKey] = replyToWebhookStub.firstCall.args
   t.is(callBot, bot)
-  t.is(callReply.replace(/\s+/g, ' ').trim(), reply)
+  const trimReply = reply => reply.replace(/\s+/g, ' ').trim()
+  t.is(trimReply(callReply), trimReply(reply))
   t.is(callIssueKey, issueKey)
 }
+
+test('sends notification when issue comment added', async t => {
+  const { handleNewIssueComment } = getModule()
+
+  await handleNewIssueComment(bot, webhookEvent)
+
+  assertStubCalledWith(t,
+    bot,
+    `
+Randy Butternubs commented on [TEST-12](${process.env.JIRA_HOST}/browse/TEST-12?focusedCommentId=10101#comment-10101):
+> Test comment
+    `,
+    issueKey
+  )
+})
 
 test('sends notification when issue comment edited', async t => {
   const { handleIssueCommentEdited } = getModule()
