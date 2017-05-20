@@ -44,12 +44,27 @@ export const listIssuesFor = async (bot, message, username) => {
 export const createIssue = async (bot, message) => {
   const [projectKey, issueType, issueSummary] = message.match.slice(-3)
 
+  if (issueType.match(/^epic$/i)) {
+    bot.reply(message, "I'm sorry, I'm unable to create Epics at this time.")
+    return
+  }
+
   let response
   try {
     response = await jira.createIssue(projectKey, issueType, issueSummary)
   } catch ({ error }) {
     console.log('Create issue failed', error)
-    bot.reply(message, "I'm sorry, I was unable to create the issue")
+    const { errors } = error
+    if ('issuetype' in errors) {
+      const validTypes = await jira.getIssueTypes()
+      const typeListStr = validTypes.map(type => type.name).join(', ')
+      bot.reply(
+        message,
+        `"${issueType}" is not a valid ticket type. Valid types are: ${typeListStr}.`
+      )
+    } else {
+      bot.reply(message, "I'm sorry, I was unable to create the issue")
+    }
     return
   }
 

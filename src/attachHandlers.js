@@ -18,7 +18,7 @@ export default (controller, handlers) => {
   controller.hears(['list (my )?open issues'], 'direct_mention,direct_message', handlers.issues.listMyIssues)
 
   controller.hears([
-    `create (new )?(.*?) (task|story|bug) [${quotes}]?([^${quotes}]*)[${quotes}]?`
+    `create (new )?(.*?) (.*?) [${quotes}]?([^${quotes}]*)[${quotes}]?`
   ], 'direct_mention,direct_message', handlers.issues.createIssue)
 
   controller.hears([
