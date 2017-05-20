@@ -28,7 +28,7 @@ export default (controller, handlers) => {
   ], 'direct_mention,direct_message', handlers.issues.getIssueStatus)
 
   controller.hears([
-    '(update|set|change) (the )?status of (.*) to (.*)'
+    `(update|set|change) (the )?status of (.*) to [${quotes}]?([^${quotes}]*)[${quotes}]?`
   ], 'direct_mention,direct_message', handlers.issues.updateIssueStatus)
 
   controller.hears([

@@ -129,7 +129,8 @@ test('bot handles updating status of an issue', t => {
     'change the status of TEST-12 to in progress',
     'change status of TEST-12 to in progress',
     'set the status of TEST-12 to in progress',
-    'set status of TEST-12 to in progress'
+    'set status of TEST-12 to in progress',
+    'set status of TEST-12 to "in progress"'
   ]
   testMessages(t, validMessages, handlers.issues.updateIssueStatus, ['TEST-12', 'in progress'])
 })
