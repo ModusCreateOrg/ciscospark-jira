@@ -9,12 +9,12 @@ export default (controller, handlers) => {
   controller.on('jira:issue_generic', handlers.webhooks.handleGeneric)
   controller.on('jira:issue_assigned', handlers.webhooks.handleIssueAssigned)
 
-  controller.hears(['list my open issues'], 'direct_mention,direct_message', handlers.issues.listMyIssues)
-
   controller.hears([
     'list (open )?issues for (.*)',
     'list (open )?issues assigned to (.*)'
   ], 'direct_mention,direct_message', handlers.issues.listIssuesForUser)
+
+  controller.hears(['list (my )?open issues'], 'direct_mention,direct_message', handlers.issues.listMyIssues)
 
   controller.hears([
     `create (new )?(.*?) (task|story|bug) [${quotes}]?([^${quotes}]*)[${quotes}]?`
@@ -48,4 +48,6 @@ export default (controller, handlers) => {
   controller.hears([/^setup$/, /^setup webhooks$/], 'direct_mention,direct_message', handlers.handleSetup)
 
   controller.hears([/^$/, 'help'], 'direct_mention,direct_message', handlers.displayHelp)
+
+  controller.hears(['.*'], 'direct_mention,direct_message', handlers.displayDefaultMessage)
 }

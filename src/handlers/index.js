@@ -4,6 +4,11 @@ import webhooks from './webhooks'
 import jira from '../jira'
 import jiraWebhookUrl from '../utils/jiraWebhookUrl'
 
+const displayDefaultMessage = (bot, message) => bot.reply(message, `
+  I'm sorry, I didn't understand your message. To see a list of the \
+  things I can do, use the \`help\` command.
+`)
+
 const displayHelp = (bot, message) => bot.reply(message, `
   Here are some of the things I can do:
   - **list open tickets** — list open issues assigned to you or someone else. For \
@@ -70,6 +75,7 @@ export const setupWebhooks = async (bot, message) => {
 }
 
 export default {
+  displayDefaultMessage,
   displayHelp,
   handleJoin,
   handleSetup,
