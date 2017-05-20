@@ -18,7 +18,8 @@ const displayHelp = (bot, message) => bot.reply(message, `
     must specify the project, type of ticket and summary. For example: \
     \`create new TEST task "Add more features"\`.
   - **ticket status** — I can find the status of an existing ticket. You can \
-    ask, for example, \`what is the status of TEST-12?\`.
+    ask, for example, \`what is the status of TEST-12?\`. You can also update \
+    the status of a ticket by specifying the desired status: \`set status of TEST-12 to in progress\`.
   - **comment on a ticket** - To comment on an issue, you can tell me which ticket \
     and your comment: \`comment on TEST-12 "These features are important"\`
   - **watch a ticket** - I can notify you of changes to a particular ticket. \
