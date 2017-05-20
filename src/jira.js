@@ -67,6 +67,11 @@ export const getIssue = async (issueKey) => {
   return await api.get(`/issue/${issueKey}`)
 }
 
+export const getIssueTypes = async () => {
+  const allTypes = await api.get('/issuetype')
+  return allTypes.filter(type => (!type.subtask && type.name !== 'Epic'))
+}
+
 export const commentOnIssue = async (issueKey, body) => {
   return await api.post(`/issue/${issueKey}/comment`, {
     body: { body }
@@ -125,6 +130,7 @@ export default {
   findWebhook,
   getIssue,
   getIssues,
+  getIssueTypes,
   isAdmin,
   linkToIssue,
   updateWebhook

@@ -4,6 +4,7 @@ import sinon from 'sinon'
 import bot, { messages } from '../helpers/mockBot'
 
 const mockIssues = require('../fixtures/search.json')
+const mockIssueTypes = require('../fixtures/issue_types.json')
 const mockUsers = require('../fixtures/user_search.json')
 
 const getModuleMock = () => {
@@ -12,6 +13,7 @@ const getModuleMock = () => {
     commentOnIssue: sinon.stub(),
     getIssue: sinon.stub(),
     getIssues: sinon.stub().returns(mockIssues),
+    getIssueTypes: sinon.stub().returns(mockIssueTypes),
     findUsers: sinon.stub().returns(mockUsers),
     linkToIssue: sinon.stub()
   }
@@ -99,12 +101,12 @@ test('create issue succeeds', async t => {
   t.true(reply.includes('TEST-17'))
 })
 
-test('create issue fails', async t => {
+test('create issue fails with unknown error', async t => {
   const { module, mocks } = getModuleMock()
   const { createIssue } = module
   const { createIssue: createIssueMock } = mocks
 
-  createIssueMock.throws('Some error happened')
+  createIssueMock.throws({ error: { errors: { oops: 'Some error happened' } } })
   const match = ['create test issue lorem ipsum', undefined, 'test', 'issue', 'lorem ipsum']
 
   await createIssue(bot, { match })
@@ -112,6 +114,21 @@ test('create issue fails', async t => {
   t.is(messages.length, 1)
   const reply = messages[0]
   t.is(reply, "I'm sorry, I was unable to create the issue")
+})
+
+test('create issue fails with issuetype error', async t => {
+  const { module, mocks } = getModuleMock()
+  const { createIssue } = module
+  const { createIssue: createIssueMock } = mocks
+
+  createIssueMock.throws({ error: { errors: { issuetype: 'Unknown issue type' } } })
+  const match = ['create test foobar lorem ipsum', undefined, 'test', 'foobar', 'lorem ipsum']
+
+  await createIssue(bot, { match })
+
+  t.is(messages.length, 1)
+  const reply = messages[0]
+  t.is(reply, `"foobar" is not a valid ticket type. Valid types are: Bug, Story, Task.`)
 })
 
 test('get issue status succeeds', async t => {
