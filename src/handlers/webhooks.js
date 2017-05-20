@@ -4,9 +4,22 @@ import replyToWebhook from '../utils/replyToWebhook'
 const linkWithKeyAndTitle = (issue) =>
   `[${issue.key} - ${issue.fields.summary}](${linkToIssue(issue)})`
 
+const linkToIssueComment = (issue, comment) =>
+  `${linkToIssue(issue)}?focusedCommentId=${comment.id}#comment-${comment.id}`
+
+export const handleNewIssueComment = (bot, event) => {
+  const { comment, issue, user } = event
+  const link = linkToIssueComment(issue, comment)
+  const message = `
+${user.displayName} commented on [${issue.key}](${link}):
+> ${comment.body}
+  `
+  replyToWebhook(bot, message, issue.key)
+}
+
 export const handleIssueCommentEdited = (bot, event) => {
   const { comment, issue, user } = event
-  const link = `${linkToIssue(issue)}?focusedCommentId=${comment.id}#comment-${comment.id}`
+  const link = linkToIssueComment(issue, comment)
   const message = `${user.displayName} edited a comment on [${issue.key}](${link})`
   replyToWebhook(bot, message, issue.key)
 }
@@ -51,5 +64,6 @@ export default {
   handleIssueAssigned,
   handleIssueCommentEdited,
   handleIssueCreated,
-  handleGeneric
+  handleGeneric,
+  handleNewIssueComment
 }

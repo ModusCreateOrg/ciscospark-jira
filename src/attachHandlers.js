@@ -4,6 +4,7 @@ const quotes = '"“”'
 export default (controller, handlers) => {
   controller.on('bot_space_join', handlers.handleJoin)
 
+  controller.on('jira:issue_commented', handlers.webhooks.handleNewIssueComment)
   controller.on('jira:issue_comment_edited', handlers.webhooks.handleIssueCommentEdited)
   controller.on('jira:issue_created', handlers.webhooks.handleIssueCreated)
   controller.on('jira:issue_generic', handlers.webhooks.handleGeneric)
