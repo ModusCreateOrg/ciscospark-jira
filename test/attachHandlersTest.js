@@ -27,6 +27,7 @@ const testMessages = (t, validMessages, expectedHandler, expectedMatches) => {
 }
 
 const handlers = {
+  displayDefaultMessage: sinon.stub(),
   handleJoin: sinon.stub(),
   watch: {
     handleListWatch: sinon.stub(),
@@ -46,6 +47,7 @@ const handlers = {
 }
 
 const resetStubs = () => {
+  Object.keys(handlers).forEach(handler => handlers[handler].reset && handlers[handler].reset())
   Object.keys(handlers.watch).forEach(handler => handlers.watch[handler].reset())
   Object.keys(handlers.webhooks).forEach(handler => handlers.webhooks[handler].reset())
   Object.keys(handlers.issues).forEach(handler => handlers.issues[handler].reset())
@@ -155,4 +157,12 @@ test('bot handles listing watched tickets', t => {
     'list watched tickets'
   ]
   testMessages(t, validMessages, handlers.watch.handleListWatch, [])
+})
+
+test('bot sends default response to unknown commands', t => {
+  const validMessages = [
+    'do a thing you cannot do',
+    'hello bot'
+  ]
+  testMessages(t, validMessages, handlers.displayDefaultMessage, [])
 })
