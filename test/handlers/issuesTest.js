@@ -5,6 +5,7 @@ import bot, { messages } from '../helpers/mockBot'
 
 const mockIssues = require('../fixtures/search.json')
 const mockIssueTypes = require('../fixtures/issue_types.json')
+const mockTransitions = require('../fixtures/transitions.json')
 const mockUsers = require('../fixtures/user_search.json')
 
 const getModuleMock = () => {
@@ -13,9 +14,11 @@ const getModuleMock = () => {
     commentOnIssue: sinon.stub(),
     getIssue: sinon.stub(),
     getIssues: sinon.stub().returns(mockIssues),
+    getIssueTransitions: sinon.stub().returns(mockTransitions),
     getIssueTypes: sinon.stub().returns(mockIssueTypes),
     findUsers: sinon.stub().returns(mockUsers),
-    linkToIssue: sinon.stub()
+    linkToIssue: sinon.stub(),
+    updateIssueStatus: sinon.stub()
   }
   const module = proxyquire('../../src/handlers/issues', {
     '../jira': { default: mocks }
@@ -166,6 +169,51 @@ test('get issue status fails', async t => {
   t.is(messages.length, 1)
   const reply = messages[0]
   t.true(reply.includes(error.errorMessages[0]))
+})
+
+test('update issue status with unknown transition', async t => {
+  const { module } = getModuleMock()
+  const { updateIssueStatus } = module
+
+  const match = ['update status of test-1 to unknown status', undefined, 'test-1', 'unknown status']
+
+  await updateIssueStatus(bot, { match })
+
+  t.is(messages.length, 1)
+  const reply = messages[0]
+  t.is(reply, `I couldn't find any transition for "unknown status". Valid options are: Backlog, Selected for Development, In Progress, Done`)
+})
+
+test('update issue status fails when updating transition', async t => {
+  const { module, mocks } = getModuleMock()
+  const { updateIssueStatus } = module
+  const { updateIssueStatus: updateIssueStatusMock } = mocks
+  const error = { errorMessages: ['Invalid transition attempted'] }
+  updateIssueStatusMock.throws({ error })
+
+  const match = ['update status of test-1 to in progress', undefined, 'test-1', 'in progress']
+
+  await updateIssueStatus(bot, { match })
+
+  t.true(updateIssueStatusMock.calledWith('test-1', '31'))
+  t.is(messages.length, 1)
+  const reply = messages[0]
+  t.true(reply.includes(error.errorMessages[0]))
+})
+
+test('update issue status succeeds', async t => {
+  const { module, mocks } = getModuleMock()
+  const { updateIssueStatus } = module
+  const { updateIssueStatus: updateIssueStatusMock } = mocks
+
+  const match = ['update status of test-1 to in progress', undefined, 'test-1', 'in progress']
+
+  await updateIssueStatus(bot, { match })
+
+  t.true(updateIssueStatusMock.calledWith('test-1', '31'))
+  t.is(messages.length, 1)
+  const reply = messages[0]
+  t.true(reply.startsWith("Ok, I've updated the status"))
 })
 
 test('comment on issue succeeds', async t => {
