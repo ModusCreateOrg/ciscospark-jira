@@ -15,6 +15,10 @@ export default (controller, handlers) => {
     'list (open )?issues assigned to (.*)'
   ], 'direct_mention,direct_message', handlers.issues.listIssuesForUser)
 
+  controller.hears([
+    'assign (.*) to (.*)'
+  ], 'direct_mention,direct_message', handlers.issues.assignIssue)
+
   controller.hears(['list (my )?open issues'], 'direct_mention,direct_message', handlers.issues.listMyIssues)
 
   controller.hears([
