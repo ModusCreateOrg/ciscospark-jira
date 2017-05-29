@@ -50,7 +50,7 @@ test('sends notification when issue comment added', async t => {
   assertStubCalledWith(t,
     bot,
     `
-Randy Butternubs commented on [TEST-12](${process.env.JIRA_HOST}/browse/TEST-12?focusedCommentId=10101#comment-10101):
+**Randy Butternubs** commented on [TEST-12](${process.env.JIRA_HOST}/browse/TEST-12?focusedCommentId=10101#comment-10101):
 > Test comment
     `,
     issueKey
@@ -64,7 +64,7 @@ test('sends notification when issue comment edited', async t => {
 
   assertStubCalledWith(t,
     bot,
-    `Randy Butternubs edited a comment on [TEST-12](${process.env.JIRA_HOST}/browse/TEST-12?focusedCommentId=10101#comment-10101)`,
+    `**Randy Butternubs** edited a comment on [TEST-12](${process.env.JIRA_HOST}/browse/TEST-12?focusedCommentId=10101#comment-10101)`,
     issueKey
   )
 })
@@ -87,7 +87,7 @@ test('sends notification when issue created', async t => {
 
   assertStubCalledWith(t,
     bot,
-    `Randy Butternubs created a new issue: [TEST-12 - This is a new issue](${process.env.JIRA_HOST}/browse/TEST-12)`,
+    `**Randy Butternubs** created a new issue: [**TEST-12** - _This is a new issue_](${process.env.JIRA_HOST}/browse/TEST-12)`,
     issueKey
   )
 })
@@ -114,7 +114,7 @@ test('sends notification when issue status updated', async t => {
 
   assertStubCalledWith(t,
     bot,
-    `[TEST-12 - Example issue](${process.env.JIRA_HOST}/browse/TEST-12) changed status from **In Progress** to **Done**`,
+    `[**TEST-12** - _Example issue_](${process.env.JIRA_HOST}/browse/TEST-12) changed status from **In Progress** to **Done**`,
     issueKey
   )
 })
@@ -138,7 +138,7 @@ test('sends notification when issue assigned', async t => {
 
   assertStubCalledWith(t,
     bot,
-    `[TEST-12 - Example issue](${process.env.JIRA_HOST}/browse/TEST-12) has been assigned to Randy Butternubs`,
+    `[**TEST-12** - _Example issue_](${process.env.JIRA_HOST}/browse/TEST-12) has been assigned to **Randy Butternubs**`,
     issueKey
   )
 })

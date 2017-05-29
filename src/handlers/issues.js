@@ -19,9 +19,12 @@ export const listIssuesForUser = (bot, message) =>
 
 const handleIncorrectUsers = (bot, message, users, username) => {
   if (users.length === 0) {
-    bot.reply(message, `Could not find any users matching "${username}"`)
+    bot.reply(message, `I'm sorry, I could not find any users matching **"${username}"**`)
   } else if (users.length !== 1) {
-    bot.reply(message, `Expected 1 user, but found ${users.length}. Please be more specific.`)
+    bot.reply(message, `
+      I'm sorry, I expected 1 user to match **"${username}"**, but found ${users.length}. \
+      Please be more specific.
+    `)
   }
 }
 
@@ -36,11 +39,11 @@ export const listIssuesFor = async (bot, message, username) => {
 
     let reply
     if (!total) {
-      reply = `I found no open issues for ${user.displayName}`
+      reply = `I found no open issues for **${user.displayName}**`
     } else {
       const issuesStr = formatIssues(issues)
       reply = (
-        `I found ${total} open issue(s) for ${user.displayName}. They are:\n${issuesStr}`
+        `I found ${total} open issue${total > 1 ? 's' : ''} for **${user.displayName}**. They are:\n${issuesStr}`
       )
     }
     bot.reply(message, reply)
@@ -62,7 +65,7 @@ export const assignIssue = async (bot, message) => {
       await jira.assignIssue(issueKey, user)
     } catch (error) {
       const errorStr = getErrorMessage(error, 'I had trouble getting the issue details')
-      bot.reply(message, `I'm sorry, I was unable to assign "${issueKey}". ${errorStr}`)
+      bot.reply(message, `I'm sorry, I was unable to assign **"${issueKey}"**. ${errorStr}`)
       return
     }
 
@@ -89,10 +92,10 @@ export const createIssue = async (bot, message) => {
     const { errors } = error
     if ('issuetype' in errors) {
       const validTypes = await jira.getIssueTypes()
-      const typeListStr = validTypes.map(type => type.name).join(', ')
+      const typeListStr = validTypes.map(type => `* ${type.name}`).join('\n')
       bot.reply(
         message,
-        `"${issueType}" is not a valid ticket type. Valid types are: ${typeListStr}.`
+        `**"${issueType}"** is not a valid ticket type. Valid types are: \n${typeListStr}`
       )
     } else {
       bot.reply(message, "I'm sorry, I was unable to create the issue")
@@ -110,7 +113,7 @@ export const getIssueStatus = async (bot, message) => {
     response = await jira.getIssue(issueKey)
   } catch (error) {
     const errorStr = getErrorMessage(error, 'I had trouble getting the issue details')
-    bot.reply(message, `I could not get the status for "${issueKey}". ${errorStr}`)
+    bot.reply(message, `I could not get the status for **"${issueKey}"**. ${errorStr}`)
     return
   }
   const { key, fields: { summary, status: { name } } } = response
@@ -127,10 +130,10 @@ export const updateIssueStatus = async (bot, message) => {
   })
 
   if (!transition) {
-    const validTransitions = transitions.map(t => t.name).join(', ')
+    const validTransitions = transitions.map(t => `* ${t.name}`).join('\n')
     bot.reply(
       message,
-      `I couldn't find any transition for "${newStatus}". Valid options are: ${validTransitions}`
+      `I couldn't find any transition for **"${newStatus}"**. Valid options are: \n${validTransitions}`
     )
     return
   }
@@ -168,12 +171,12 @@ export const commentOnIssue = async (bot, message) => {
     response = await jira.commentOnIssue(issueKey, body)
   } catch (error) {
     const errorStr = getErrorMessage(error, 'I had trouble posting your comment.')
-    bot.reply(message, `I could not add your comment on "${issueKey}". ${errorStr}`)
+    bot.reply(message, `I could not add your comment on **"${issueKey}"**. ${errorStr}`)
     return
   }
   const { id } = response
   const link = `${jira.linkToIssue({ key: issueKey })}?focusedCommentId=${id}#comment-${id}`
-  bot.reply(message, `Ok, I've added your comment to [${issueKey}](${link}).`)
+  bot.reply(message, `Ok, I've added your comment to **[${issueKey}](${link})**.`)
 }
 
 export default {

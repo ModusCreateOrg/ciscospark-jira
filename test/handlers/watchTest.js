@@ -23,7 +23,9 @@ test('handle newly watched ticket', async t => {
   const ticket = await fakeController.storage.tickets.get(expectedTicketKey)
   t.deepEqual(ticket.rooms, [roomId])
   t.is(messages.length, 1)
-  t.is(messages[0], 'Ok, I will notify you of changes to TEST-17 in this room')
+  const reply = messages[0]
+  t.true(reply.startsWith('Ok, I will notify you of changes to'))
+  t.true(reply.includes('TEST-17'))
 })
 
 test('handle ticket watched in another room', async t => {
@@ -34,7 +36,9 @@ test('handle ticket watched in another room', async t => {
   const ticket = await fakeController.storage.tickets.get(expectedTicketKey)
   t.deepEqual(ticket.rooms, ['some other room', roomId])
   t.is(messages.length, 1)
-  t.is(messages[0], 'Ok, I will notify you of changes to TEST-17 in this room')
+  const reply = messages[0]
+  t.true(reply.startsWith('Ok, I will notify you of changes to'))
+  t.true(reply.includes('TEST-17'))
 })
 
 test('handle previously watched ticket', async t => {
@@ -45,7 +49,9 @@ test('handle previously watched ticket', async t => {
   const ticket = await fakeController.storage.tickets.get(expectedTicketKey)
   t.deepEqual(ticket.rooms, [roomId])
   t.is(messages.length, 1)
-  t.is(messages[0], 'Ok, I will notify you of changes to TEST-17 in this room')
+  const reply = messages[0]
+  t.true(reply.startsWith('Ok, I will notify you of changes to'))
+  t.true(reply.includes('TEST-17'))
 })
 
 test('handle unwatch watched ticket', async t => {
@@ -56,7 +62,9 @@ test('handle unwatch watched ticket', async t => {
   const ticket = await fakeController.storage.tickets.get(expectedTicketKey)
   t.deepEqual(ticket.rooms, ['some other room'])
   t.is(messages.length, 1)
-  t.is(messages[0], 'Ok, I will no longer notify you of changes to TEST-17 in this room')
+  const reply = messages[0]
+  t.true(reply.startsWith('Ok, I will no longer notify you of changes to'))
+  t.true(reply.includes('TEST-17'))
 })
 
 test('handle unwatch ticket that is not watched', async t => {
@@ -66,7 +74,9 @@ test('handle unwatch ticket that is not watched', async t => {
   const ticket = await fakeController.storage.tickets.get(expectedTicketKey)
   t.falsy(ticket)
   t.is(messages.length, 1)
-  t.is(messages[0], 'Ok, I will no longer notify you of changes to TEST-17 in this room')
+  const reply = messages[0]
+  t.true(reply.startsWith('Ok, I will no longer notify you of changes to'))
+  t.true(reply.includes('TEST-17'))
 })
 
 test('handle list watched tickets when room is JIRA_WEBHOOK_ROOM', async t => {
@@ -93,7 +103,9 @@ test('handle list watched tickets when watching a ticket', async t => {
   await handleListWatch(bot, message)
 
   t.is(messages.length, 1)
-  t.is(messages[0], "I'm watching the following tickets and will post updates to this room: TEST-17")
+  const reply = messages[0]
+  t.true(reply.startsWith("I'm watching the following tickets and will post updates to this room"))
+  t.true(reply.includes('TEST-17'))
 })
 
 test('handle list watched tickets when watching multiple ticket', async t => {
@@ -103,5 +115,8 @@ test('handle list watched tickets when watching multiple ticket', async t => {
   await handleListWatch(bot, message)
 
   t.is(messages.length, 1)
-  t.is(messages[0], "I'm watching the following tickets and will post updates to this room: TEST-1, TEST-17")
+  const reply = messages[0]
+  t.true(reply.startsWith("I'm watching the following tickets and will post updates to this room"))
+  t.true(reply.includes('TEST-1'))
+  t.true(reply.includes('TEST-17'))
 })
