@@ -45,6 +45,9 @@ export const findUsers = async (searchStr) => {
   }
 }
 
+export const assignIssue = async (issueKey, user) =>
+  api.put(`/issue/${issueKey}/assignee`, { body: { name: user.name } })
+
 export const createIssue = async (projectKey, issueType, issueSummary) => {
   projectKey = projectKey.toUpperCase()
   issueType = issueType.charAt(0).toUpperCase() + issueType.substr(1).toLowerCase()
@@ -126,6 +129,7 @@ export const updateWebhook = async (existingWebhook) => {
 export const linkToIssue = issue => `${process.env.JIRA_HOST}/browse/${issue.key}`
 
 export default {
+  assignIssue,
   commentOnIssue,
   createIssue,
   createWebhook,

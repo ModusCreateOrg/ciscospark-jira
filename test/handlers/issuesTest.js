@@ -10,6 +10,7 @@ const mockUsers = require('../fixtures/user_search.json')
 
 const getModuleMock = () => {
   const mocks = {
+    assignIssue: sinon.stub(),
     createIssue: sinon.stub(),
     commentOnIssue: sinon.stub(),
     getIssue: sinon.stub(),
@@ -81,6 +82,60 @@ test('list issues when no issues found', async t => {
   t.is(messages.length, 1)
   const reply = messages[0]
   t.is(reply, 'I found no open issues for Randy Butternubs')
+})
+
+test('assign issue when assignment succeeds', async t => {
+  const { module } = getModuleMock()
+  const { assignIssue } = module
+
+  await assignIssue(bot, { match: ['test-6', 'randy'] })
+
+  t.is(messages.length, 1)
+  const reply = messages[0]
+  t.true(reply.startsWith("Ok, I've assigned"))
+  t.true(reply.includes('test-6'))
+  t.true(reply.includes('Randy Butternubs'))
+})
+
+test('assign issue when assignment fails', async t => {
+  const { module, mocks } = getModuleMock()
+  const { assignIssue } = module
+  const { assignIssue: assignIssueMock } = mocks
+  assignIssueMock.throws({ error: { errors: { oops: 'Some error happened' } } })
+
+  await assignIssue(bot, { match: ['test-6', 'randy'] })
+
+  t.is(messages.length, 1)
+  const reply = messages[0]
+  t.true(reply.startsWith("I'm sorry, I was unable to assign \"test-6\""))
+})
+
+test('assign issue when no users found', async t => {
+  const { module, mocks } = getModuleMock()
+  const { assignIssue } = module
+  const { findUsers } = mocks
+
+  findUsers.returns([])
+
+  await assignIssue(bot, { match: ['test-5', 'randy'] })
+
+  t.is(messages.length, 1)
+  const reply = messages[0]
+  t.true(reply.startsWith('Could not find any users'))
+})
+
+test('assign issue when multiple users found', async t => {
+  const { module, mocks } = getModuleMock()
+  const { assignIssue } = module
+  const { findUsers } = mocks
+
+  findUsers.returns([...mockUsers, ...mockUsers])
+
+  await assignIssue(bot, { match: ['test-5', 'randy'] })
+
+  t.is(messages.length, 1)
+  const reply = messages[0]
+  t.true(reply.startsWith('Expected 1 user, but found 2.'))
 })
 
 test('create issue succeeds', async t => {
