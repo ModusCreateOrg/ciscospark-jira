@@ -38,7 +38,7 @@ test('list my issues for user when issues are found', async t => {
 
   t.is(messages.length, 1)
   const reply = messages[0]
-  t.true(reply.startsWith('I found 3 open issue(s) for Randy Butternubs'))
+  t.true(reply.startsWith('I found 3 open issues for **Randy Butternubs**'))
   t.true(reply.includes('TEST-7'))
 })
 
@@ -53,7 +53,7 @@ test('list issues when no users found', async t => {
 
   t.is(messages.length, 1)
   const reply = messages[0]
-  t.true(reply.startsWith('Could not find any users'))
+  t.is(reply, "I'm sorry, I could not find any users matching **\"randy\"**")
 })
 
 test('list issues when multiple users found', async t => {
@@ -67,7 +67,7 @@ test('list issues when multiple users found', async t => {
 
   t.is(messages.length, 1)
   const reply = messages[0]
-  t.true(reply.startsWith('Expected 1 user, but found 2.'))
+  t.true(reply.trim().startsWith("I'm sorry, I expected 1 user to match **\"randy\"**, but found 2."))
 })
 
 test('list issues when no issues found', async t => {
@@ -81,7 +81,7 @@ test('list issues when no issues found', async t => {
 
   t.is(messages.length, 1)
   const reply = messages[0]
-  t.is(reply, 'I found no open issues for Randy Butternubs')
+  t.is(reply, 'I found no open issues for **Randy Butternubs**')
 })
 
 test('assign issue when assignment succeeds', async t => {
@@ -107,7 +107,7 @@ test('assign issue when assignment fails', async t => {
 
   t.is(messages.length, 1)
   const reply = messages[0]
-  t.true(reply.startsWith("I'm sorry, I was unable to assign \"test-6\""))
+  t.true(reply.startsWith("I'm sorry, I was unable to assign **\"test-6\"**"))
 })
 
 test('assign issue when no users found', async t => {
@@ -121,7 +121,7 @@ test('assign issue when no users found', async t => {
 
   t.is(messages.length, 1)
   const reply = messages[0]
-  t.true(reply.startsWith('Could not find any users'))
+  t.is(reply, "I'm sorry, I could not find any users matching **\"randy\"**")
 })
 
 test('assign issue when multiple users found', async t => {
@@ -135,7 +135,7 @@ test('assign issue when multiple users found', async t => {
 
   t.is(messages.length, 1)
   const reply = messages[0]
-  t.true(reply.startsWith('Expected 1 user, but found 2.'))
+  t.true(reply.trim().startsWith("I'm sorry, I expected 1 user to match **\"randy\"**, but found 2."))
 })
 
 test('create issue succeeds', async t => {
@@ -186,7 +186,7 @@ test('create issue fails with issuetype error', async t => {
 
   t.is(messages.length, 1)
   const reply = messages[0]
-  t.is(reply, `"foobar" is not a valid ticket type. Valid types are: Bug, Story, Task.`)
+  t.is(reply, `**"foobar"** is not a valid ticket type. Valid types are: \n* Bug\n* Story\n* Task`)
 })
 
 test('get issue status succeeds', async t => {
@@ -236,7 +236,7 @@ test('update issue status with unknown transition', async t => {
 
   t.is(messages.length, 1)
   const reply = messages[0]
-  t.is(reply, `I couldn't find any transition for "unknown status". Valid options are: Backlog, Selected for Development, In Progress, Done`)
+  t.is(reply, `I couldn't find any transition for **"unknown status"**. Valid options are: \n* Backlog\n* Selected for Development\n* In Progress\n* Done`)
 })
 
 test('update issue status fails when updating transition', async t => {
