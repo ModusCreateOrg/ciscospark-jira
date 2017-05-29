@@ -17,6 +17,10 @@ const displayHelp = (bot, message) => bot.reply(message, `
   - **create tickets** — I can create a new task, story, or bug for you. You \
     must specify the project, type of ticket and summary. For example: \
     \`create new TEST task "Add more features"\`.
+  - **assign a ticket** - I can assign a ticket to another user or yourself. For \
+    example, to assign a ticket to yourself, you could say \`assign TEST-1 to me\`. \
+    To assign a ticket to someone else, simply use their name: \
+    \`assign TEST-1 to George\`.
   - **ticket status** — I can find the status of an existing ticket. You can \
     ask, for example, \`what is the status of TEST-12?\`. You can also update \
     the status of a ticket by specifying the desired status: \`set status of TEST-12 to in progress\`.

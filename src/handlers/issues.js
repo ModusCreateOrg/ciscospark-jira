@@ -17,13 +17,19 @@ export const listMyIssues = (bot, message) =>
 export const listIssuesForUser = (bot, message) =>
   listIssuesFor(bot, message, message.match[message.match.length - 1])
 
-export const listIssuesFor = async (bot, message, username) => {
-  const users = await jira.findUsers(username)
-
+const handleIncorrectUsers = (bot, message, users, username) => {
   if (users.length === 0) {
     bot.reply(message, `Could not find any users matching "${username}"`)
   } else if (users.length !== 1) {
     bot.reply(message, `Expected 1 user, but found ${users.length}. Please be more specific.`)
+  }
+}
+
+export const listIssuesFor = async (bot, message, username) => {
+  const users = await jira.findUsers(username)
+
+  if (users.length !== 1) {
+    handleIncorrectUsers(bot, message, users, username)
   } else {
     const user = users[0]
     const { issues, total } = await jira.getIssues(user.key)
@@ -37,6 +43,32 @@ export const listIssuesFor = async (bot, message, username) => {
         `I found ${total} open issue(s) for ${user.displayName}. They are:\n${issuesStr}`
       )
     }
+    bot.reply(message, reply)
+  }
+}
+
+export const assignIssue = async (bot, message) => {
+  let [issueKey, username] = message.match.slice(-2)
+  if (username === 'me') {
+    username = message.user
+  }
+  const users = await jira.findUsers(username)
+
+  if (users.length !== 1) {
+    handleIncorrectUsers(bot, message, users, username)
+  } else {
+    const user = users[0]
+    try {
+      await jira.assignIssue(issueKey, user)
+    } catch (error) {
+      const errorStr = getErrorMessage(error, 'I had trouble getting the issue details')
+      bot.reply(message, `I'm sorry, I was unable to assign "${issueKey}". ${errorStr}`)
+      return
+    }
+
+    const reply = (
+      `Ok, I've assigned [${issueKey}](${jira.linkToIssue({ key: issueKey })}) to **${user.displayName}**.`
+    )
     bot.reply(message, reply)
   }
 }
@@ -145,6 +177,7 @@ export const commentOnIssue = async (bot, message) => {
 }
 
 export default {
+  assignIssue,
   commentOnIssue,
   createIssue,
   getIssueStatus,

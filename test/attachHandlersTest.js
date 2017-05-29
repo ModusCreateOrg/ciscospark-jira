@@ -38,6 +38,7 @@ const handlers = {
     handleIssueCommentEdited: sinon.stub()
   },
   issues: {
+    assignIssue: sinon.stub(),
     commentOnIssue: sinon.stub(),
     createIssue: sinon.stub(),
     getIssueStatus: sinon.stub(),
@@ -81,6 +82,13 @@ test('bot handles listing issues for another user', t => {
     'list open issues assigned to george'
   ]
   testMessages(t, validMessages, handlers.issues.listIssuesForUser, ['george'])
+})
+
+test('bot handles assigning issues', t => {
+  const validMessages = [
+    'assign test-8 to george'
+  ]
+  testMessages(t, validMessages, handlers.issues.assignIssue, ['test-8', 'george'])
 })
 
 test('bot handles creating a new issue', t => {
