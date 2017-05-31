@@ -49,7 +49,7 @@ export const handleSetup = async (bot, message) => {
   const isAdmin = await jira.isAdmin()
   if (!isAdmin) {
     bot.reply(message, `
-      It appears I don't have adminstrator priveleges on JIRA. \
+      It appears I don't have administrator privileges on JIRA. \
       ${setupInstructions} I recommend registering for at least the "Issue" \
       events for your requested project.`)
   } else {
