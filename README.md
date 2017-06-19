@@ -2,10 +2,29 @@
 
 [![CircleCI](https://circleci.com/gh/promptworks/ciscospark-jira.svg?style=svg)](https://circleci.com/gh/promptworks/ciscospark-jira)
 
-This is a bot for Cisco Spark that integrates with JIRA.
+This is a self-hosted bot for Cisco Spark that integrates with JIRA.
 
 [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
 
+# Features
+
+This bot allows developers and project managers to work seamlessly with JIRA directly from
+Cisco Spark.
+
+With this bot, you can:
+
+* create new tickets
+* list assigned tickets
+* get requested details about a ticket
+* assign, comment on, or update the status of a ticket
+* receive updates on JIRA tickets as they happen
+
+without having to leave your Spark channel.
+
+![example use](https://user-images.githubusercontent.com/1062277/27293924-d3e1b5b2-54e5-11e7-8243-5fc8fa1cdd3a.png)
+
+The bot is designed so that you can deploy the bot yourself so you can maintain
+full control over the bot and its access to your data.
 
 ## Spark Configuration
 

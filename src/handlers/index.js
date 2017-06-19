@@ -31,6 +31,8 @@ const displayHelp = (bot, message) => bot.reply(message, `
     \`start watching TEST-12\`. To stop receiving notifications, you can tell \
     me to stop watching a ticket: \`stop watching TEST-12\`. To see a list of \
     tickets I'm watching you can use: \`list watched tickets\`.
+  - **show issue details** - If you mention an issue's key without specifying \
+    another command, I'll give you a some details about the issue.
   - **setup webhooks** — In order to watch tickets, webhooks must be setup. I \
     can assist with setting up webhooks if you use the \`setup webhooks\` command.
   - **help** — display this message
