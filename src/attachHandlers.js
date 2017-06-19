@@ -56,6 +56,8 @@ export default (controller, handlers) => {
 
   controller.hears([/^setup$/, /^setup webhooks$/], 'direct_mention,direct_message', handlers.handleSetup)
 
+  controller.hears([/\s?([A-za-z]+-[0-9]+)\s?/], 'direct_mention,direct_message', handlers.issues.expandIssue)
+
   controller.hears([/^$/, 'help'], 'direct_mention,direct_message', handlers.displayHelp)
 
   controller.hears(['.*'], 'direct_mention,direct_message', handlers.displayDefaultMessage)

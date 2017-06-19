@@ -41,6 +41,7 @@ const handlers = {
     assignIssue: sinon.stub(),
     commentOnIssue: sinon.stub(),
     createIssue: sinon.stub(),
+    expandIssue: sinon.stub(),
     getIssueStatus: sinon.stub(),
     listMyIssues: sinon.stub(),
     listIssuesForUser: sinon.stub(),
@@ -179,6 +180,15 @@ test('bot handles listing watched tickets', t => {
     'list watched tickets'
   ]
   testMessages(t, validMessages, handlers.watch.handleListWatch, [])
+})
+
+test('bot expands issue details when issue key mentioned', t => {
+  const validMessages = [
+    'What about TEST-6',
+    'What do you guys think about TEST-6?',
+    'TEST-6 is not an issue I know much about'
+  ]
+  testMessages(t, validMessages, handlers.issues.expandIssue, ['TEST-6'])
 })
 
 test('bot sends default response to unknown commands', t => {
