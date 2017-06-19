@@ -106,6 +106,34 @@ export const createIssue = async (bot, message) => {
   bot.reply(message, `[${response.key}](${jira.linkToIssue(response)}) created!`)
 }
 
+export const expandIssue = async (bot, message) => {
+  const issueKey = message.match[message.match.length - 1]
+  let response
+  try {
+    response = await jira.getIssue(issueKey)
+  } catch (error) {
+    const errorStr = getErrorMessage(error, 'Could not get issue.')
+    console.log(`I thought "${issueKey}" may have been an issue, but I got an error: ${errorStr}`)
+    return
+  }
+  const {
+    key,
+    fields: {
+      assignee,
+      status: { name: statusName },
+      summary
+    }
+  } = response
+  const { displayName, name } = assignee || {}
+  const assignedToStr = displayName ? `Assigned to **${displayName}** (_${name}_)` : '_Unassigned_'
+  const lines = [
+    `[${key}] **${summary}**`,
+    jira.linkToIssue(response),
+    `(${statusName}) ${assignedToStr}`
+  ]
+  bot.reply(message, lines.join('\n\n'))
+}
+
 export const getIssueStatus = async (bot, message) => {
   const issueKey = message.match[message.match.length - 1]
   let response
@@ -183,6 +211,7 @@ export default {
   assignIssue,
   commentOnIssue,
   createIssue,
+  expandIssue,
   getIssueStatus,
   listIssuesForUser,
   listMyIssues,
