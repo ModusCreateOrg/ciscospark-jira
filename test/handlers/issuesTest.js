@@ -189,6 +189,70 @@ test('create issue fails with issuetype error', async t => {
   t.is(reply, `**"foobar"** is not a valid ticket type. Valid types are: \n* Bug\n* Story\n* Task`)
 })
 
+test('expand issue succeeds', async t => {
+  const { module, mocks } = getModuleMock()
+  const { expandIssue } = module
+  const { getIssue: getIssueMock } = mocks
+  const issue = {
+    key: 'TEST-12',
+    fields: {
+      assignee: {
+        name: 'randy',
+        displayName: 'Randy Butternubs'
+      },
+      summary: 'Example issue',
+      status: {
+        name: 'In Progress'
+      }
+    }
+  }
+  getIssueMock.returns(issue)
+
+  await expandIssue(bot, { match: ['what about TEST-12?', 'TEST-12'] })
+
+  t.true(getIssueMock.calledWith('TEST-12'))
+  t.is(messages.length, 1)
+  const reply = messages[0]
+  t.true(reply.includes('Example issue'))
+  t.true(reply.includes('(In Progress) Assigned to **Randy Butternubs** (_randy_)'))
+})
+
+test('expand issue succeeds with unassigned issue', async t => {
+  const { module, mocks } = getModuleMock()
+  const { expandIssue } = module
+  const { getIssue: getIssueMock } = mocks
+  const issue = {
+    key: 'TEST-12',
+    fields: {
+      summary: 'Example issue',
+      status: {
+        name: 'Backlog'
+      }
+    }
+  }
+  getIssueMock.returns(issue)
+
+  await expandIssue(bot, { match: ['what about TEST-12?', 'TEST-12'] })
+
+  t.true(getIssueMock.calledWith('TEST-12'))
+  t.is(messages.length, 1)
+  const reply = messages[0]
+  t.true(reply.includes('Example issue'))
+  t.true(reply.includes('(Backlog) _Unassigned_'))
+})
+
+test('expand issue fails', async t => {
+  const { module, mocks } = getModuleMock()
+  const { expandIssue } = module
+  const { getIssue: getIssueMock } = mocks
+  getIssueMock.throws({ error: 'Could not find issue' })
+
+  await expandIssue(bot, { match: ['what about TEST-12?', 'TEST-12'] })
+
+  t.true(getIssueMock.calledWith('TEST-12'))
+  t.is(messages.length, 0)
+})
+
 test('get issue status succeeds', async t => {
   const { module, mocks } = getModuleMock()
   const { getIssueStatus } = module
