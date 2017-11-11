@@ -9,7 +9,7 @@
         "subtask": false
     },
     {
-        "description": "A user story. Created by JIRA Software - do not edit or delete.",
+        "description": "A user story. Created by Jira Software - do not edit or delete.",
         "iconUrl": "https://pw-test.atlassian.net/images/icons/issuetypes/story.svg",
         "id": "10100",
         "name": "Story",

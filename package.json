@@ -1,7 +1,7 @@
 {
   "name": "spark-jira-bot",
   "version": "0.1.0",
-  "description": "JIRA bot for Cisco Spark",
+  "description": "Jira bot for Cisco Spark",
   "main": "lib/index.js",
   "engines": {
     "node": "~7.8"

@@ -39,10 +39,10 @@ const displayHelp = (bot, message) => bot.reply(message, `
 `)
 
 export const handleJoin = (bot, message) =>
-  bot.reply(message, 'This trusty JIRA bot is here to help.')
+  bot.reply(message, 'This trusty Jira bot is here to help.')
 
 const setupInstructions = `
-  A JIRA administrator will need to head over to \
+  A Jira administrator will need to head over to \
   ${process.env.JIRA_HOST}/plugins/servlet/webhooks and enter \
   \`${jiraWebhookUrl}\` for the webhook URL. \
 `
@@ -51,7 +51,7 @@ export const handleSetup = async (bot, message) => {
   const isAdmin = await jira.isAdmin()
   if (!isAdmin) {
     bot.reply(message, `
-      It appears I don't have administrator privileges on JIRA. \
+      It appears I don't have administrator privileges on Jira. \
       ${setupInstructions} I recommend registering for at least the "Issue" \
       events for your requested project.`)
   } else {
@@ -60,7 +60,7 @@ export const handleSetup = async (bot, message) => {
 }
 
 export const setupWebhooks = async (bot, message) => {
-  const webhookName = 'Cisco Spark JIRA Webhook'
+  const webhookName = 'Cisco Spark Jira Webhook'
   try {
     const existingWebhook = await jira.findWebhook()
     if (existingWebhook) {
