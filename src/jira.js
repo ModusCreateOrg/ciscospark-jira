@@ -14,9 +14,9 @@ export const webhookApi = api.defaults({ baseUrl: `${process.env.JIRA_HOST}/rest
 
 const logError = (error) => {
   if (error.statusCode && error.statusCode === 401) {
-    console.log('ERROR: Got "Unauthorized" error from JIRA API. Please check JIRA bot credentials!')
+    console.log('ERROR: Got "Unauthorized" error from Jira API. Please check Jira bot credentials!')
   } else {
-    console.log(`ERROR: Got error from JIRA API: ${error.name} -- ${error.message}`)
+    console.log(`ERROR: Got error from Jira API: ${error.name} -- ${error.message}`)
   }
 }
 

@@ -1,14 +1,14 @@
-# JIRA bot for Cisco Spark
+# Jira bot for Cisco Spark
 
 [![CircleCI](https://circleci.com/gh/promptworks/ciscospark-jira.svg?style=svg)](https://circleci.com/gh/promptworks/ciscospark-jira)
 
-This is a self-hosted bot for Cisco Spark that integrates with JIRA.
+This is a self-hosted bot for Cisco Spark that integrates with Jira.
 
 [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
 
 # Features
 
-This bot allows developers and project managers to work seamlessly with JIRA directly from
+This bot allows developers and project managers to work seamlessly with Jira directly from
 Cisco Spark.
 
 With this bot, you can:
@@ -17,7 +17,7 @@ With this bot, you can:
 * list assigned tickets
 * get requested details about a ticket
 * assign, comment on, or update the status of a ticket
-* receive updates on JIRA tickets as they happen
+* receive updates on Jira tickets as they happen
 
 without having to leave your Spark channel.
 
@@ -42,23 +42,23 @@ are expected to exist in the environment (or `.env` or `.env.local` files):
   If multiple domains are supported, they should be specified as a space-separated
   list of domains (`"example.com example2.com"`).
 
-## JIRA Configuration
+## Jira Configuration
 
-In order for the bot to talk with JIRA a couple configuration values are required:
+In order for the bot to talk with Jira a couple configuration values are required:
 
-* `JIRA_HOST` - the URL to the JIRA instance
+* `JIRA_HOST` - the URL to the Jira instance
   (`https://YOUR_SUBDOMAIN.atlassian.net` for example)
 * `JIRA_USERNAME` and `JIRA_PASSWORD` - the username and password used to
-  authenticate with the JIRA API. Changes made to JIRA will be performed by
+  authenticate with the Jira API. Changes made to Jira will be performed by
   this user, so you may want to create a special bot account.
 
-### JIRA Webhooks
+### Jira Webhooks
 
 To be notified of events via webhooks, you must
 [register
-the webhook via the JIRA administration console](https://developer.atlassian.com/jiradev/jira-apis/webhooks#Webhooks-jiraadmin).
+the webhook via the Jira administration console](https://developer.atlassian.com/jiradev/jira-apis/webhooks#Webhooks-jiraadmin).
 
-If the bot's JIRA account is an administrator, the bot can do this itself when
+If the bot's Jira account is an administrator, the bot can do this itself when
 you tell it to `setup webhooks`.
 
 If the bot is not an administrator, you must setup up webhooks manually.
@@ -66,7 +66,7 @@ The URL should be `<PUBLIC_ADDRESS>/jira/receive`, where `<PUBLIC_ADDRESS>` is
 the same URL as specified above. Be sure to select the notifications that you
 want to receive in the administration console.
 
-Once the webhooks are setup in JIRA, you can use the `watch` command with the bot
+Once the webhooks are setup in Jira, you can use the `watch` command with the bot
 to receive notifications of updates to the watched issues. The updates will be
 posted to whichever room the command was given in.
 
@@ -180,8 +180,8 @@ src
 │   ├── issues.js      # All message handlers related to issue management
 │   └── webhooks.js    # All webhook handlers
 ├── index.js           # The entry point of the bot
-├── jira.js            # Wrapper around JIRA api
-└── server.js          # Webserver that handles incoming Spark messages and JIRA webhooks
+├── jira.js            # Wrapper around Jira API
+└── server.js          # Webserver that handles incoming Spark messages and Jira webhooks
 ```
 
 Separating the handlers from the controller (in this case, specifying expected phrases
@@ -231,7 +231,7 @@ botkit when to invoke our handler.
 
 You can add a new function in `src/handlers/webhooks.js` that accepts two parameters:
 `bot`, the botkit instance and `event` the JSON body of the webhook notification
-from JIRA.
+from Jira.
 
 In order to send a message, we need to know which room to post the webhook notifications
 to, specified by the `JIRA_WEBHOOK_ROOM` environment variable. For your convenience,

@@ -1,6 +1,6 @@
 {
-  "name": "JIRA bot for Cisco Spark",
-  "description": "JIRA bot for Cisco Spark",
+  "name": "Jira bot for Cisco Spark",
+  "description": "Jira bot for Cisco Spark",
   "repository": "https://github.com/promptworks/ciscospark-jira",
   "addons": ["heroku-redis"],
   "env": {
@@ -30,15 +30,15 @@
       "required": false
     },
     "JIRA_HOST": {
-      "description": "The URL to your JIRA instance",
+      "description": "The URL to your Jira instance",
       "required": true
     },
     "JIRA_USERNAME": {
-      "description": "The username of the account to used to authenticate with JIRA. Changes made to JIRA will be performed by this user, so you may want to create a special bot account.",
+      "description": "The username of the account to used to authenticate with Jira. Changes made to Jira will be performed by this user, so you may want to create a special bot account.",
       "required": true
     },
     "JIRA_PASSWORD": {
-      "description": "The password of the account to used to authenticate with JIRA.",
+      "description": "The password of the account to used to authenticate with Jira.",
       "required": true
     },
     "JIRA_WEBHOOK_ROOM": {
